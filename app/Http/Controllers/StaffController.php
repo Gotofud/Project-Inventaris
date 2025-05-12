@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use App\Models\User;
+use App\Exports\StaffExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StaffController extends Controller
 {
@@ -18,6 +20,11 @@ class StaffController extends Controller
     {
         $staff = User::all();
         return view('staff.index', compact('staff'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new StaffExport, 'Staff.xlsx');
     }
 
     /**
@@ -107,6 +114,6 @@ class StaffController extends Controller
         $staff = User::findOrFail($id);
         $staff->delete();
 
-        return redirect()->route('staff.index')->with('delete_done', 'data has been deleted');
+        return redirect()->route('staff.index')->with('delete_success', 'data has been deleted');
     }
 }

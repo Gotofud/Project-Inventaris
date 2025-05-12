@@ -1,14 +1,37 @@
 @include('layouts.admin.header')
 
 <body>
-    @if (session('login_success'))
-        <div class="toast toast-onload align-items-center text-bg-primary border-0" role="alert" aria-live="assertive"
+ @if (session('add_success'))
+        <div class="toast toast-onload align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
             aria-atomic="true">
             <div class="toast-body hstack align-items-start gap-6">
-                <i class="ti ti-progress-check fs-6"></i>
+                <i class="ti ti-circle-check fs-6"></i>
                 <div>
-                    <h5 class="text-white fs-3 mb-1">Login Success</h5>
-                    <h6 class="text-white fs-2 mb-0">Welcome Back {{ Auth::user()->name }}!</h6>
+                    <h5 class="text-white fs-3 mb-1">Incoming Item Success</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    @elseif (session('edit_success'))
+        <div class="toast toast-onload align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+            aria-atomic="true">
+            <div class="toast-body hstack align-items-start gap-6">
+                <i class="ti ti-circle-check fs-6"></i>
+                <div>
+                    <h5 class="text-white fs-3 mb-1">Edit Data Success</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    @elseif (session('delete_success'))
+        <div class="toast toast-onload align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+            aria-atomic="true">
+            <div class="toast-body hstack align-items-start gap-6">
+                <i class="ti ti-circle-check fs-6"></i>
+                <div>
+                    <h5 class="text-white fs-3 mb-1">Delete Data Success</h5>
                 </div>
                 <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
                     aria-label="Close"></button>
@@ -64,9 +87,9 @@
                                     <a type="button" class="btn btn-primary btn-md text-white mb-3 me-0"
                                         data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i
                                             class=" ti ti-folder-plus"></i></a>
-                                    <a href="#" class="btn btn-success btn-md text-white mb-3 me-0">
-                                        <i class="ti ti-file-spreadsheet"></i> Convert into Excel
-                                    </a>
+                                    <a href="{{ route('incoming.export') }}" type="button"
+                                        class="btn btn-success btn-md text-white mb-3 me-0"><i
+                                            class=" ti ti-file-spreadsheet"></i> Export Excel</a>
                                 </div>
                             </div>
                             <!-- Modal Form-->
@@ -77,7 +100,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="staticBackdropLabel"><i
-                                            class="ti ti-script-plus"></i> Incoming Item</h1>
+                                                    class="ti ti-script-plus"></i> Incoming Item</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
@@ -190,7 +213,7 @@
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
-                                                        <div class="modal-body">
+                                                       <div class="modal-body">
                                                             <!-- Form Edit Group -->
                                                             <form action="{{ route('incoming-item.update', $data->id) }}"
                                                                 method="POST" enctype="multipart/form-data">
@@ -202,9 +225,9 @@
                                                                     <select class="form-select"
                                                                         aria-label="Default select example" name="item_id">
                                                                         <option selected>Select Data</option>
-                                                                        @foreach ($icmMaindata as $data)
-                                                                            <option value="{{ $data->id }}">
-                                                                                {{ $data->name }}
+                                                                        @foreach ($icmMaindata as $edit)
+                                                                            <option value="{{ $edit->id }}" {{ $data->item_id == $edit->id ? 'selected' : ''}}>
+                                                                                {{ $edit->name }}
                                                                             </option>
                                                                         @endforeach
                                                                     </select>
@@ -215,7 +238,7 @@
                                                                     <input type="number" class="form-control"
                                                                         placeholder="Amount" aria-label="Amount"
                                                                         aria-describedby="basic-addon1" name="amount"
-                                                                        value="amount">
+                                                                        value="{{ $data->amount }}">
                                                                 </div>
                                                                 <div class="input-group mb-3">
                                                                     <span class="input-group-text" id="basic-addon1"><i
@@ -223,14 +246,14 @@
                                                                     <input type="date" class="form-control"
                                                                         placeholder="Entry Date" aria-label="Password"
                                                                         aria-describedby="basic-addon1" name="entry_date"
-                                                                        value="entry_date">
+                                                                        value="{{ $data->entry_date }}">
                                                                 </div>
                                                                 <div class="input-group mb-3">
                                                                     <span class="input-group-text" id="basic-addon1"><i
                                                                             class="ti ti-info-circle"></i></span>
                                                                     <textarea class="form-control" placeholder="Information"
                                                                         aria-label="info" aria-describedby="basic-addon1"
-                                                                        name="info" value="info"></textarea>
+                                                                        name="info">{{$data->info}}</textarea>
                                                                 </div>
                                                         </div>
                                                         <div class="modal-footer">

@@ -151,7 +151,7 @@
                                         <img src="{{ asset('assets/images/svgs/book-download.svg') }}" width="50"
                                             height="50" class="mb-3" alt="modernize-img" />
                                         <p class="fw-semibold fs-3 text-dark mb-1">Return Data</p>
-                                        <h5 class="fw-semibold text-dark mb-0">356</h5>
+                                        <h5 class="fw-semibold text-dark mb-0">{{ $totalReturn }}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +163,7 @@
                                         <img src="{{ asset('') }}assets/images/svgs/book-upload.svg" width="50"
                                             height="50" class="mb-3" alt="modernize-img" />
                                         <p class="fw-semibold fs-3 text-dark mb-1">Loan Data</p>
-                                        <h5 class="fw-semibold text-dark mb-0">$96k</h5>
+                                        <h5 class="fw-semibold text-dark mb-0">{{ $totalLoan }}</h5>
                                     </div>
                                 </div>
                             </div>

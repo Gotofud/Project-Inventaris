@@ -19,7 +19,8 @@ return new class extends Migration
             $table->integer('amount');
             $table->date('loan_date');
             $table->string('brws_name');
-            $table->string('status');
+            $table->string('info');
+            $table->boolean('status')->default(0);
             $table->unsignedBigInteger('item_id');
             $table->foreign('item_id')->references('id')->on('maindatas')->onDelete('cascade');
             $table->timestamps();

@@ -1,8 +1,7 @@
 <?php
-
 namespace App\Exports;
 
-use App\Models\MainDatas;
+use App\Models\mainDatas;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
@@ -10,11 +9,20 @@ class MainDataExport implements FromCollection, WithHeadings
 {
     public function collection()
     {
-        return MainDatas::all(['prd_code', 'name', 'category', 'stock','created_at']);
+        return mainDatas::with('category')->get()->map(function ($item) {
+            return [
+                'prd_code' => $item->prd_code,
+                'name' => $item->name,
+                'category' => $item->category->category_name ?? 'N/A',
+                'stock' => $item->stock,
+            ];
+        });
     }
 
     public function headings(): array
     {
-        return ['Production Code', 'Item Name', 'Category', 'Stock', 'Created At'];
+        return ['Product Code', 'Name', 'Category', 'Stock'];
     }
 }
+
+

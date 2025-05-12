@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\incomingItems;
+use App\Models\loanData;
 use App\Models\mainDatas;
+use App\Models\Category;
+use App\Models\outcomingItems;
 use Illuminate\Http\Request;
+use App\Exports\IncomingExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class incomingItemController extends Controller
 {
@@ -17,8 +22,15 @@ class incomingItemController extends Controller
     {
         $icm_item = incomingItems::all();
         $icmMaindata = mainDatas::all();
-        return view('incoming-item.index', compact('icm_item', 'icmMaindata'));
+        $icm_out = outcomingItems::all();
+        return view('incoming-item.index', compact('icm_item', 'icmMaindata', 'icm_out'));
     }
+
+    public function export()
+    {
+        return Excel::download(new incomingExport, 'icm_item-Data.xlsx');
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -55,7 +67,7 @@ class incomingItemController extends Controller
         $icm_item->info = $request->info;
         $icm_item->save();
 
-        return redirect()->route('incoming-item.index')->with('icm_success', 'data has been added');
+        return redirect()->route('incoming-item.index')->with('add_success', 'data has been added');
     }
 
     /**
@@ -90,32 +102,27 @@ class incomingItemController extends Controller
     public function update(Request $request, $id)
     {
         $icm_item = incomingItems::findOrFail($id);
-        $icmMaindata = mainDatas::all();
-        if ($request->filled('icm_code')) {
-            $request->validate([
-                'icm_code' => ['string', 'confirmed'],
-            ]);
+        $icmMaindata = mainDatas::findOrFail($icm_item->item_id);
 
-            $lastRecord = incomingItems::latest('id')->first();
-            $lastId = $lastRecord ? $lastRecord->id : 0;
-            $icm_code = 'INCM-' . str_pad($lastId + 1, 4, '0', STR_PAD_LEFT);
-            $icm_item->icm_code = $icm_code;
-
-        }
-
-        $icmMaindata = mainDatas::findOrFail($request->item_id);
+        // Tambahkan kembali jumlah sebelumnya ke stok
         $icmMaindata->stock += $request->amount;
-        $icmMaindata->save();   
+
+        // Kurangi stok dengan jumlah baru
+        $icmMaindata->stock -= $icm_item->amount;
+        $icmMaindata->save();
+
+        $lastRecord = incomingItems::latest('id')->first();
+        $lastId = $lastRecord ? $lastRecord->id : 0;
+        $icm_code = 'INCM-' . str_pad($lastId + 1, 4, '0', STR_PAD_LEFT);
+        $icm_item->icm_code = $icm_code;
 
         $icm_item->amount = $request->amount;
         $icm_item->item_id = $request->item_id;
         $icm_item->entry_date = $request->entry_date;
         $icm_item->info = $request->info;
-
-
         $icm_item->save();
 
-        return redirect()->route('incoming-item.index')->with('edit_success', 'data has been added');
+        return redirect()->route('incoming-item.index')->with('edit_success', 'data has been edit');
     }
 
     /**
@@ -127,9 +134,18 @@ class incomingItemController extends Controller
     public function destroy($id)
     {
         $icm_item = incomingItems::findOrFail($id);
-        $icmMaindata = mainDatas::all();
+
+        outcomingItems::where('item_id', $icm_item->item_id)->delete();
+        loanData::where('item_id', $icm_item->item_id)->delete();
+
+        $mainData = mainDatas::findOrFail($icm_item->item_id);
+        $mainData->stock -= $icm_item->amount;
+        $mainData->save();
+
         $icm_item->delete();
 
-        return redirect()->route('incoming-item.index')->with('delete_success', 'data has been deleted');
+        return redirect()->route('incoming-item.index')->with('delete_success', 'icm_item and related outcoming items deleted');
     }
+
+
 }

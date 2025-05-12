@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Category;
+use App\Models\loanData;
+use App\Models\mainDatas;
+use App\Exports\ReturnExport;
+use Maatwebsite\Excel\Facades\Excel;
 
-class categoryController extends Controller
+
+class ReturnController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +18,14 @@ class categoryController extends Controller
      */
     public function index()
     {
-        // $category = Category::all();
-        // return view('mainData.index',compact('category'));
+        $loan = loanData::all();
+        $r_Maindata = mainDatas::all();
+        return view('return.index', compact('loan','r_Maindata'));
+    }
+
+     public function export()
+    {
+        return Excel::download(new ReturnExport, 'Return-data.xlsx');
     }
 
     /**
@@ -36,15 +46,7 @@ class categoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'name' => 'required|max:200'
-        ]);
-        
-        $category = new Category();
-        $category->category_name = $request->name;
-        $category->save();
-
-        return redirect()->route('mainData.index')->with('category_success','success');
+        //
     }
 
     /**

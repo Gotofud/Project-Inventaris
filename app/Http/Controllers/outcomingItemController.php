@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\mainDatas;
 use App\Models\outcomingItems;
+use App\Exports\OutcomingExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class outcomingItemController extends Controller
 {
@@ -17,8 +19,15 @@ class outcomingItemController extends Controller
     {
         $out_item = outcomingItems::all();
         $outMaindata = mainDatas::all();
+        
         return view('outcoming-item.index', compact('out_item', 'outMaindata'));
     }
+
+     public function export()
+    {
+        return Excel::download(new OutcomingExport, 'Outcoming-Data.xlsx');
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -55,7 +64,7 @@ class outcomingItemController extends Controller
         $out_item->info = $request->info;
         $out_item->save();
 
-        return redirect()->route('outcoming-item.index')->with('out_success', 'data has been added');
+        return redirect()->route('outcoming-item.index')->with('add_success', 'data has been added');
     }
 
     /**
@@ -89,7 +98,28 @@ class outcomingItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $out_item = outcomingItems::findOrFail($id);
+        $outMaindata = mainDatas::findOrFail($out_item->item_id);
+
+        // Tambahkan kembali jumlah sebelumnya ke stok
+        $outMaindata->stock += $out_item->amount;
+
+        // Kurangi stok dengan jumlah baru
+        $outMaindata->stock -= $request->amount;
+        $outMaindata->save();
+
+        $lastRecord = outcomingItems::latest('id')->first();
+        $lastId = $lastRecord ? $lastRecord->id : 0;
+        $out_code = 'OUTM-' . str_pad($lastId + 1, 4, '0', STR_PAD_LEFT);
+        $out_item->out_code = $out_code;
+
+        $out_item->amount = $request->amount;
+        $out_item->item_id = $request->item_id;
+        $out_item->exit_date = $request->exit_date;
+        $out_item->info = $request->info;
+        $out_item->save();
+
+        return redirect()->route('outcoming-item.index')->with('edit_success', 'data has been edit');
     }
 
     /**
@@ -100,6 +130,11 @@ class outcomingItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $out_item = outcomingItems::findOrFail($id);
+        $outMaindata = mainDatas::findOrFail($out_item->item_id);
+        $outMaindata->stock += $out_item->amount;
+        $outMaindata->save();
+        $out_item->delete();
+        return redirect()->route('outcoming-item.index')->with('delete_success', 'data has been delete');
     }
 }

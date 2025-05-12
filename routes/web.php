@@ -8,6 +8,9 @@ use App\Http\Controllers\mainDataController;
 use App\Http\Controllers\incomingItemController;
 use App\Http\Controllers\outcomingItemController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\ReturnController;
+use App\Http\Middleware\isAdmin; 
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,16 +30,28 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
+
 // Staff
+Route::prefix('/')->middleware('auth',isAdmin::class)->group(function(){    
 Route::resource('staff', StaffController::class);
+Route::get('/staff-export', [StaffController::class, 'export'])->name('staff.export');  
+});
+
 // Main Data
 Route::resource('mainData', mainDataController::class);
-Route::get('/export', [mainDataController::class, 'export'])->name('mainData.export');
+Route::get('/mainData-export', [mainDataController::class, 'export'])->name('mainData.export');
 // Incoming Data
 Route::resource('incoming-item', incomingItemController::class);
+Route::get('/incoming-item-export', [incomingItemController::class, 'export'])->name('incoming.export');
 // Category
 Route::resource('category',categoryController::class);
 // Outcoming Data
 Route::resource('outcoming-item',outcomingItemController::class);
+Route::get('/outcoming-item-export', [outcomingItemController::class, 'export'])->name('outcoming.export');
 // Loan
 Route::resource('loan', LoanController::class);
+Route::put('/loan/return/{id}', [LoanController::class, 'return'])->name('loan.return');
+Route::get('/loan.export', [LoanController::class, 'export'])->name('loan.export');
+// Return
+Route::resource('return',ReturnController::class);
+Route::get('/return.export', [ReturnController::class, 'export'])->name('return.export');

@@ -1,19 +1,56 @@
 @include('layouts.admin.header')
 
 <body>
-    @if (session('login_success'))
-        <div class="toast toast-onload align-items-center text-bg-primary border-0" role="alert" aria-live="assertive"
+    @if (session('add_success'))
+        <div class="toast toast-onload align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
             aria-atomic="true">
             <div class="toast-body hstack align-items-start gap-6">
-                <i class="ti ti-progress-check fs-6"></i>
+                <i class="ti ti-circle-check fs-6"></i>
                 <div>
-                    <h5 class="text-white fs-3 mb-1">Login Success</h5>
-                    <h6 class="text-white fs-2 mb-0">Welcome Back {{ Auth::user()->name }}!</h6>
+                    <h5 class="text-white fs-3 mb-1">Add Staff Success</h5>
                 </div>
                 <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
                     aria-label="Close"></button>
             </div>
         </div>
+    @elseif (session('edit_success'))
+        <div class="toast toast-onload align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+            aria-atomic="true">
+            <div class="toast-body hstack align-items-start gap-6">
+                <i class="ti ti-circle-check fs-6"></i>
+                <div>
+                    <h5 class="text-white fs-3 mb-1">Edit Staff Success</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    @elseif (session('delete_success'))
+        <div class="toast toast-onload align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+            aria-atomic="true">
+            <div class="toast-body hstack align-items-start gap-6">
+                <i class="ti ti-circle-check fs-6"></i>
+                <div>
+                    <h5 class="text-white fs-3 mb-1">Delete Staff Success</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    @elseif (count($errors) > 0)
+        @foreach ($errors->all() as $error)
+            <div class="toast toast-onload align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
+                aria-atomic="true">
+                <div class="toast-body hstack align-items-start gap-6">
+                    <i class="ti ti-circle-x fs-6"></i>
+                    <div>
+                        <h5 class="text-white fs-3 mb-1">{{$error}}</h5>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+        @endforeach
     @endif
 
     <!-- Preloader -->
@@ -63,8 +100,14 @@
                         <div class="card-body">
                             <div class="d-sm-flex justify-content-between align-items-start">
                                 <h4 class="card-title"><i class="ti ti-users"></i>Staff Data</h4>
-                                <a type="button" class="btn btn-primary btn-md text-white mb-3 me-0"
-                                    data-bs-toggle="modal" data-bs-target="#add"><i class=" ti ti-user-plus"></i></a>
+                                <div class="action">
+                                    <a type="button" class="btn btn-primary btn-md   text-white mb-3 me-0"
+                                        data-bs-toggle="modal" data-bs-target="#add"><i
+                                            class=" ti ti-user-plus"></i></a>
+                                    <a href="{{ route('staff.export') }}" type="button"
+                                        class="btn btn-success btn-md text-white mb-3 me-0"><i
+                                            class=" ti ti-file-spreadsheet"></i> Export Excel</a>
+                                </div>
                             </div>
                             <!-- Modal Form-->
                             <div class="modal fade" id="add" data-bs-backdrop="static" data-bs-keyboard="false"

@@ -7,6 +7,7 @@ use App\Models\mainDatas;
 use App\Models\Category;
 use App\Models\incomingItems;
 use App\Models\outcomingItems;
+use App\Models\loanData;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -33,7 +34,11 @@ class HomeController extends Controller
         $totalCategory = Category::count();
         $totalIncoming = incomingItems::count();
         $totalOutcoming = outcomingItems::count();
-        return view('welcome', compact('totalStaff','totalData','totalCategory','totalIncoming','totalOutcoming'));
+        $totalLoan = loanData::count();
+        $totalReturn = loanData::where('status', 1)->count();
+        return view('welcome', compact('totalStaff','totalData','totalCategory','totalIncoming','totalOutcoming','totalLoan','totalReturn'));
     }
+
+    
 
 }
