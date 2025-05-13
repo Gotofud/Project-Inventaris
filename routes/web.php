@@ -31,10 +31,13 @@ Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
 
-// Staff
 Route::prefix('/')->middleware('auth',isAdmin::class)->group(function(){    
+// Staff
 Route::resource('staff', StaffController::class);
 Route::get('/staff-export', [StaffController::class, 'export'])->name('staff.export');  
+// Category    
+Route::resource('category', categoryController::class);
+Route::get('/category-export', [categoryController::class, 'export'])->name('category.export'); 
 });
 
 // Main Data
@@ -43,8 +46,7 @@ Route::get('/mainData-export', [mainDataController::class, 'export'])->name('mai
 // Incoming Data
 Route::resource('incoming-item', incomingItemController::class);
 Route::get('/incoming-item-export', [incomingItemController::class, 'export'])->name('incoming.export');
-// Category
-Route::resource('category',categoryController::class);
+
 // Outcoming Data
 Route::resource('outcoming-item',outcomingItemController::class);
 Route::get('/outcoming-item-export', [outcomingItemController::class, 'export'])->name('outcoming.export');

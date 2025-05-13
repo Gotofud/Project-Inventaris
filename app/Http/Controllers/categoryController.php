@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Exports\CategoryExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class categoryController extends Controller
 {
@@ -14,8 +16,8 @@ class categoryController extends Controller
      */
     public function index()
     {
-        // $category = Category::all();
-        // return view('mainData.index',compact('category'));
+        $category = Category::all();
+        return view('category.index', compact('category'));
     }
 
     /**
@@ -36,15 +38,20 @@ class categoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'name' => 'required|max:200'
         ]);
-        
+
         $category = new Category();
         $category->category_name = $request->name;
         $category->save();
 
-        return redirect()->route('mainData.index')->with('category_success','success');
+        return redirect()->route('category.index')->with('category_success', 'success');
+    }
+
+     public function export()
+    {
+        return Excel::download(new CategoryExport, 'Category.xlsx');
     }
 
     /**
@@ -78,7 +85,15 @@ class categoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+          $this->validate($request, [
+            'name' => 'required|max:200'
+        ]);
+
+        $category = Category::findOrFail($id);
+        $category->category_name = $request->name;
+        $category->save();
+
+        return redirect()->route('category.index')->with('edit_success', 'success');
     }
 
     /**
@@ -89,6 +104,9 @@ class categoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+         $category = Category::findOrFail($id);
+         $category->delete();
+
+         return redirect()->route('category.index')->with('delete_success', 'success');
     }
 }

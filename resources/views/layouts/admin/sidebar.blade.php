@@ -3,7 +3,7 @@
         <!-- Start Vertical Layout Sidebar -->
         <!-- ---------------------------------- -->
         <div class="brand-logo d-flex align-items-center justify-content-between">
-            <a href="./main/index.html" class="text-nowrap logo-img">
+            <a href="{{ route('welcome') }}" class="text-nowrap logo-img">
                 <img src="{{ asset('assets/images/logo.svg') }}" class="dark-logo" alt="Logo-Dark" />
             </a>
             <a href="javascript:void(0)" class="sidebartoggler ms-auto text-decoration-none fs-5 d-block d-xl-none">
@@ -33,14 +33,14 @@
                     </a>
                 </li>
                 @if (Auth::user()->is_admin === 1)
-                   <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{route('staff.index')}}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-users"></i>
-                        </span>
-                        <span class="hide-menu">Staff</span>
-                    </a>
-                </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{route('staff.index')}}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-users"></i>
+                            </span>
+                            <span class="hide-menu">Staff</span>
+                        </a>
+                    </li>
                 @endif
                 <!-- ---------------------------------- -->
                 <!-- Data -->
@@ -57,6 +57,16 @@
                         <span class="hide-menu">Main Data</span>
                     </a>
                 </li>
+                @if (Auth::user()->is_admin === 1)
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{route('category.index')}}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-category"></i>
+                            </span>
+                            <span class="hide-menu">Category</span>
+                        </a>
+                    </li>
+                @endif
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{route('incoming-item.index')}}" aria-expanded="false">
                         <span>
@@ -91,7 +101,7 @@
                 </li>
         </nav>
 
-        <div class="fixed-profile p-3 mx-4 mb-2 bg-secondary-subtle rounded mt-3">
+        <div class="fixed-profile p-3 mx-4 mb-2 bg-secondary-subtle rounded mt-4">
             <div class="hstack gap-3">
                 @if (Auth::user()->is_admin === 1)
                     <div class="john-img">
@@ -109,9 +119,9 @@
                     <span class="fs-2">@if (Auth::user()->is_admin === 1)
                         Admin
                     @else
-                        Staff
-                    @endif
-                </span>
+                            Staff
+                        @endif
+                    </span>
                 </div>
                 <a class="border-0 bg-transparent text-primary ms-auto" tabindex="0" type="button" aria-label="logout"
                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="logout" href="{{ route('logout') }}"

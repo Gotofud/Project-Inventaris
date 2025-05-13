@@ -17,7 +17,7 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-      if($request->routeIs('staff.*')&& Auth::user()->is_admin !== 1) {
+      if($request->routeIs('staff.*' , 'category.*') && Auth::user()->is_admin !== 1) {
         abort(403, "You Don't Have Access For This");
       }
         return $next($request);

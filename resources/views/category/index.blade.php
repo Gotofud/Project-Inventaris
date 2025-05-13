@@ -1,25 +1,13 @@
 @include('layouts.admin.header')
 
 <body>
-@if (session('add_success'))
+    @if (session('edit_success'))
         <div class="toast toast-onload align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
             aria-atomic="true">
             <div class="toast-body hstack align-items-start gap-6">
                 <i class="ti ti-circle-check fs-6"></i>
                 <div>
-                    <h5 class="text-white fs-3 mb-1">Add Item Success</h5>
-                </div>
-                <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
-            </div>
-        </div>
-    @elseif (session('edit_success'))
-        <div class="toast toast-onload align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
-            aria-atomic="true">
-            <div class="toast-body hstack align-items-start gap-6">
-                <i class="ti ti-circle-check fs-6"></i>
-                <div>
-                    <h5 class="text-white fs-3 mb-1">Edit Item Success</h5>
+                    <h5 class="text-white fs-3 mb-1">Edit Category Success</h5>
                 </div>
                 <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
                     aria-label="Close"></button>
@@ -31,26 +19,38 @@
             <div class="toast-body hstack align-items-start gap-6">
                 <i class="ti ti-circle-check fs-6"></i>
                 <div>
-                    <h5 class="text-white fs-3 mb-1">Delete Item Success</h5>
+                    <h5 class="text-white fs-3 mb-1">Delete Category Success</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    @elseif (session('category_success'))
+        <div class="toast toast-onload align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+            aria-atomic="true">
+            <div class="toast-body hstack align-items-start gap-6">
+                <i class="ti ti-circle-check fs-6"></i>
+                <div>
+                    <h5 class="text-white fs-3 mb-1">Add Category Success</h5>
                 </div>
                 <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
                     aria-label="Close"></button>
             </div>
         </div>
     @elseif (count($errors) > 0)
-    @foreach ($errors->all() as $error)
-    <div class="toast toast-onload align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
-            aria-atomic="true">
-            <div class="toast-body hstack align-items-start gap-6">
-                <i class="ti ti-circle-x fs-6"></i>
-                <div>
-                    <h5 class="text-white fs-3 mb-1">{{$error}}</h5>
+        @foreach ($errors->all() as $error)
+            <div class="toast toast-onload align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
+                aria-atomic="true">
+                <div class="toast-body hstack align-items-start gap-6">
+                    <i class="ti ti-circle-x fs-6"></i>
+                    <div>
+                        <h5 class="text-white fs-3 mb-1">{{$error}}</h5>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
                 </div>
-                <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
             </div>
-        </div>
-    @endforeach    
+        @endforeach
     @endif
 
     <!-- Preloader -->
@@ -73,14 +73,14 @@
                         <div class="card-body px-4 py-3">
                             <div class="row align-items-center">
                                 <div class="col-9">
-                                    <h4 class="fw-semibold mb-8">Main Data</h4>
+                                    <h4 class="fw-semibold mb-8">Category</h4>
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item">
                                                 <a class="text-muted text-decoration-none"
                                                     href="{{ route('welcome') }}">Dashboard</a>
                                             </li>
-                                            <li class="breadcrumb-item" aria-current="page">Main Data</li>
+                                            <li class="breadcrumb-item" aria-current="page">Category</li>
                                         </ol>
                                     </nav>
                                 </div>
@@ -96,57 +96,42 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-sm-flex justify-content-between align-items-start">
-                                <h4 class="card-title"><i class="ti ti-folders"></i>Main Data</h4>
+                                <h4 class="card-title"><i class="ti ti-folders"></i>Category</h4>
                                 <div class="action">
                                     <a type="button" class="btn btn-primary btn-md text-white mb-3 me-0"
-                                        data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i
+                                        data-bs-toggle="modal" data-bs-target="#category"><i
                                             class=" ti ti-folder-plus"></i></a>
-                                    <a href="{{ route('mainData.export') }}" type="button" class="btn btn-success btn-md text-white mb-3 me-0"><i class=" ti ti-file-spreadsheet"></i> Export Excel</a>
+                                    <a href="{{ route('category.export') }}" type="button"
+                                        class="btn btn-success btn-md text-white mb-3 me-0"><i
+                                            class=" ti ti-file-spreadsheet"></i> Export Excel</a>
                                 </div>
 
                             </div>
-                            <!-- Modal Form Add data-->
-                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
-                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-                                aria-hidden="true">
+                            <!-- Modal Form Add category-->
+                            <div class="modal fade" id="category" data-bs-backdrop="static" data-bs-keyboard="false"
+                                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="staticBackdropLabel"><i
-                                                    class="ti ti-folder"></i> Add Item</h1>
+                                                    class="ti ti-category"></i> Add Category</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <!-- Form Input Group -->
-                                            <form action="{{ route('mainData.store') }}" method="POST"
-                                                enctype="multipart/form-data">
+                                            <form action="{{ route('category.store') }}" method="POST">
                                                 @csrf
                                                 <div class="input-group mb-3">
                                                     <span class="input-group-text" id="basic-addon1"><i
                                                             class="ti ti-folder"></i></span>
-                                                    <input type="text" class="form-control" placeholder="Item Name"
+                                                    <input type="text" class="form-control" placeholder="Category Name"
                                                         aria-label="Username" aria-describedby="basic-addon1"
                                                         name="name">
                                                 </div>
-                                                <div class="input-group mb-3">
-                                                    <span class="input-group-text" id="basic-addon1"><i
-                                                            class="ti ti-category"></i></span>
-                                                    <select class="form-select" aria-label="Default select example"
-                                                        name="category_id">
-                                                        <option selected>Select Category</option>
-                                                        @foreach ($category as $data)
-                                                            <option value="{{ $data->id }}">{{ $data->category_name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="input-group mb-3">
-                                                    <input class="form-control" type="file" id="formFile" name="img">
-                                                </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary" name="save"><i
+                                            <button type="submit" class="btn btn-primary"><i
                                                     class="ti ti-device-floppy"></i>Save</button>
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Close</button>
@@ -156,38 +141,30 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- End Modal Add data -->
+                            <!-- End Modal Add category -->
                             <!-- Table -->
                             <div class="table-responsive mb-3">
-                                <table class="table table-striped table-bordered text-nowrap align-middle mainData">
+                                <table class="table table-striped table-bordered text-nowrap align-middle category">
                                     <thead>
                                         <!-- start row -->
                                         <tr>
-                                            <th>Image</th>
-                                            <th>Production Code</th>
-                                            <th>Name</th>
+                                            <th>#</th>
                                             <th>Category</th>
-                                            <th>Stock</th>
-                                            <th>Created At</th>
                                             <th>Action</th>
                                         </tr>
                                         <!-- end row -->
                                     </thead>
                                     <tbody>
+                                        @php
+                                        $no = 1;
+                                        @endphp
                                         <!-- start row -->
-                                        @foreach ($mainData as $data)
+                                        @foreach ($category as $data)
                                             <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td>{{ $data->category_name }}</td>
                                                 <td>
-                                                    <img src="{{asset('/images/data/' . $data->img)}}" class="rounded"
-                                                        width="50">
-                                                </td>
-                                                <td>{{ $data->prd_code }}</td>
-                                                <td>{{ $data->name }}</td>
-                                                <td>{{ $data->category->category_name }}</td>
-                                                <td>{{ $data->stock }}</td>
-                                                <td>{{ $data->created_at }}</td>
-                                                <td>
-                                                    <form action="{{ route('mainData.destroy', $data->id) }}" method="POST">
+                                                    <form action="{{ route('category.destroy', $data->id) }}" method="POST">
                                                         <a type="button" class="btn btn-warning" data-bs-toggle="modal"
                                                             data-bs-target="#edit-{{ $data->id }}">
                                                             <i class="ti ti-pencil"></i>
@@ -200,62 +177,43 @@
                                                     </form>
                                                 </td>
                                             </tr>
-                                            <!-- Edit Modal Form -->
+                                            <!-- Modal Form Edit category-->
                                             <div class="modal fade" id="edit-{{ $data->id }}" data-bs-backdrop="static"
                                                 data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                                                 aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h1 class="modal-title fs-5"><i class="ti ti-folder"></i> Edit
-                                                                Data</h1>
+                                                            <h1 class="modal-title fs-5" id="staticBackdropLabel"><i
+                                                                    class="ti ti-category"></i> Edit Category</h1>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <!-- Form Input Group -->
-                                                            <form action="{{ route('mainData.update', $data->id) }}"
-                                                                method="POST" enctype="multipart/form-data">
+                                                            <form action="{{ route('category.update', $data->id) }}" method="POST">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <div class="input-group mb-3">
-                                                                    <img src="{{asset('/images/data/' . $data->img)}}"
-                                                                        width="50">
-                                                                    <input class="form-control" type="file" id="formFile"
-                                                                        name="img">
-                                                                </div>
-                                                                <div class="input-group mb-3">
-                                                                    <span class="input-group-text"><i
-                                                                            class="ti ti-list-details"></i></span>
-                                                                    <input type="text" class="form-control"
-                                                                        value="{{ $data->name }}" name="name">
-                                                                </div>
-                                                                <div class="input-group mb-3">
                                                                     <span class="input-group-text" id="basic-addon1"><i
-                                                                            class="ti ti-category"></i></span>
-                                                                    <select class="form-select"
-                                                                        aria-label="Default select example"
-                                                                        name="category_id">
-                                                                        <option selected>Select Category</option>
-                                                                        @foreach ($category as $data)
-                                                                            <option value="{{ $data->id}}" >
-                                                                                {{ $data->category_name }}
-                                                                            </option>
-                                                                        @endforeach
-                                                                    </select>
+                                                                            class="ti ti-folder"></i></span>
+                                                                    <input type="text" class="form-control"
+                                                                        placeholder="Category Name" aria-label="Username"
+                                                                        aria-describedby="basic-addon1" name="name" value="{{ $data->category_name }}">
                                                                 </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-primary"><i
-                                                                    class="ti ti-device-floppy"></i> Save</button>
+                                                                    class="ti ti-device-floppy"></i>Save</button>
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                         </form>
+                                                        <!-- End Form -->
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- End Edit Modal -->
+                                            <!-- End Modal Edit category -->
                                         @endforeach
                                         <!-- end row -->
                                     </tbody>
@@ -271,7 +229,7 @@
 </body>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('.mainData').DataTable();
+        $('.category').DataTable();
     });
 </script>
 

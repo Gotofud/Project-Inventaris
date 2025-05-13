@@ -54,16 +54,16 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="border-end pe-4 border-muted border-opacity-10">
                                                     <h3 class="mb-1 fw-semibold fs-8 d-flex align-content-center">
-                                                        $2,340<i
+                                                        {{$totalIncoming}}<i
                                                             class="ti ti-arrow-up-right fs-5 lh-base text-info"></i>
                                                     </h3>
-                                                    <p class="mb-0 text-dark">Today’s Sales</p>
+                                                    <p class="mb-0 text-dark">Total Incoming</p>
                                                 </div>
                                                 <div class="ps-4">
-                                                    <h3 class="mb-1 fw-semibold fs-8 d-flex align-content-center">35%<i
+                                                    <h3 class="mb-1 fw-semibold fs-8 d-flex align-content-center">{{ $totalLoan }}<i
                                                             class="ti ti-arrow-up-right fs-5 lh-base text-info"></i>
                                                     </h3>
-                                                    <p class="mb-0 text-dark">Overall Performance</p>
+                                                    <p class="mb-0 text-dark">Total Loan</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -173,6 +173,7 @@
             </div>
         </div>
     </div>
+    
     <!-- Script -->
     @include('layouts.admin.script')
 </body>
