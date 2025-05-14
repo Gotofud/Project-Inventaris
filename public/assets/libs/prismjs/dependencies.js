@@ -1,4 +1,4 @@
-'use strict';
+Y'use strict';
 
 /**
  * @typedef {Object<string, ComponentCategory>} Components

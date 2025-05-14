@@ -1,7 +1,7 @@
 @include('layouts.admin.header')
 
 <body>
-@if (session('add_success'))
+    @if (session('add_success'))
         <div class="toast toast-onload align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
             aria-atomic="true">
             <div class="toast-body hstack align-items-start gap-6">
@@ -38,19 +38,19 @@
             </div>
         </div>
     @elseif (count($errors) > 0)
-    @foreach ($errors->all() as $error)
-    <div class="toast toast-onload align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
-            aria-atomic="true">
-            <div class="toast-body hstack align-items-start gap-6">
-                <i class="ti ti-circle-x fs-6"></i>
-                <div>
-                    <h5 class="text-white fs-3 mb-1">{{$error}}</h5>
+        @foreach ($errors->all() as $error)
+            <div class="toast toast-onload align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
+                aria-atomic="true">
+                <div class="toast-body hstack align-items-start gap-6">
+                    <i class="ti ti-circle-x fs-6"></i>
+                    <div>
+                        <h5 class="text-white fs-3 mb-1">{{$error}}</h5>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
                 </div>
-                <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
             </div>
-        </div>
-    @endforeach    
+        @endforeach
     @endif
 
     <!-- Preloader -->
@@ -101,9 +101,10 @@
                                     <a type="button" class="btn btn-primary btn-md text-white mb-3 me-0"
                                         data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i
                                             class=" ti ti-folder-plus"></i></a>
-                                    <a href="{{ route('mainData.export') }}" type="button" class="btn btn-success btn-md text-white mb-3 me-0"><i class=" ti ti-file-spreadsheet"></i> Export Excel</a>
+                                    <a href="{{ route('mainData.export') }}" type="button"
+                                        class="btn btn-success btn-md text-white mb-3 me-0"><i
+                                            class=" ti ti-file-spreadsheet"></i> Export Excel</a>
                                 </div>
-
                             </div>
                             <!-- Modal Form Add data-->
                             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
@@ -160,6 +161,27 @@
                             <!-- Table -->
                             <div class="table-responsive mb-3">
                                 <table class="table table-striped table-bordered text-nowrap align-middle mainData">
+                                               <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label>Category Filter</label>
+                                            <select id="categoryFilter" class="form-select">
+                                                <option value="">All Category</option>
+                                                @foreach ($category as $cat)
+                                                    <option value="{{ $cat->category_name }}">{{ $cat->category_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Date Filter</label>
+                                            <div class="input-group">
+                                                <input type="date" id="startDate" class="form-control"
+                                                    placeholder="from">
+                                                <input type="date" id="endDate" class="form-control"
+                                                    placeholder="To">
+                                            </div>
+                                        </div>
+                                    </div>
                                     <thead>
                                         <!-- start row -->
                                         <tr>
@@ -176,7 +198,8 @@
                                     <tbody>
                                         <!-- start row -->
                                         @foreach ($mainData as $data)
-                                            <tr>
+                                            <tr data-category="{{ $data->category->category_name }}"
+                                                data-date="{{ \Carbon\Carbon::parse($data->created_at)->format('Y-m-d') }}">
                                                 <td>
                                                     <img src="{{asset('/images/data/' . $data->img)}}" class="rounded"
                                                         width="50">
@@ -238,7 +261,7 @@
                                                                         name="category_id">
                                                                         <option selected>Select Category</option>
                                                                         @foreach ($category as $data)
-                                                                            <option value="{{ $data->id}}" >
+                                                                            <option value="{{ $data->id}}">
                                                                                 {{ $data->category_name }}
                                                                             </option>
                                                                         @endforeach
@@ -269,10 +292,39 @@
             <!-- Script -->
             @include('layouts.admin.script')
 </body>
-<script type="text/javascript">
+<script>
     $(document).ready(function () {
-        $('.mainData').DataTable();
+        var table = $('.mainData').DataTable();
+
+        // Filter Kategori
+        $('#categoryFilter').on('change', function () {
+            var selected = $(this).val().toLowerCase();
+            table.rows().every(function () {
+                var category = $(this.node()).data('category').toLowerCase();
+                if (selected === "" || category === selected) {
+                    $(this.node()).show();
+                } else {
+                    $(this.node()).hide();
+                }
+            });
+        });
+
+        // Filter Tanggal
+        $('#startDate, #endDate').on('change', function () {
+            var start = $('#startDate').val();
+            var end = $('#endDate').val();
+
+            table.rows().every(function () {
+                var date = $(this.node()).data('date');
+                if ((!start || date >= start) && (!end || date <= end)) {
+                    $(this.node()).show();
+                } else {
+                    $(this.node()).hide();
+                }
+            });
+        });
     });
 </script>
+
 
 </html>

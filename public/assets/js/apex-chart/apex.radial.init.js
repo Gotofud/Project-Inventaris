@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
         dataLabels: {
           name: {
             fontSize: "22px",
-          },
+          },  
           value: {
             fontSize: "16px",
             color: "#a1aab2",

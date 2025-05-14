@@ -44,8 +44,8 @@
                                                         <img src="../assets/images/profile/user-1.jpg" alt="modernize-img"
                                                             width="40" height="40">
                                                     @else
-                                                    <img src="../assets/images/profile/user-3.jpg" alt="modernize-img"
-                                                    width="40" height="40">
+                                                        <img src="../assets/images/profile/user-3.jpg" alt="modernize-img"
+                                                            width="40" height="40">
                                                     @endif
                                                 </div>
                                                 <h5 class="fw-semibold mb-0 fs-5">Welcome back {{ Auth::user()->name }}!
@@ -60,7 +60,8 @@
                                                     <p class="mb-0 text-dark">Total Incoming</p>
                                                 </div>
                                                 <div class="ps-4">
-                                                    <h3 class="mb-1 fw-semibold fs-8 d-flex align-content-center">{{ $totalLoan }}<i
+                                                    <h3 class="mb-1 fw-semibold fs-8 d-flex align-content-center">
+                                                        {{ $totalLoan }}<i
                                                             class="ti ti-arrow-up-right fs-5 lh-base text-info"></i>
                                                     </h3>
                                                     <p class="mb-0 text-dark">Total Loan</p>
@@ -77,6 +78,12 @@
                                 </div>
                             </div>
                         </div>
+                              <div class="card" style="width: 25rem;">
+                        <div class="card-body">
+                            <h4 class="card-title">Data Chart</h4>
+                            <div id="donut-chart" class="mx-n3"></div>
+                        </div>
+                    </div>
                     </div>
                     <!--  Owl carousel -->
                     <div class="owl-carousel counter-carousel owl-theme">
@@ -84,7 +91,7 @@
                             <div class="card border-0 zoom-in bg-info-subtle shadow-none">
                                 <div class="card-body">
                                     <div class="text-center">
-                                        <img src="{{ asset('') }}assets/images/svgs/location-minus.svg" width="50"
+                                        <img src="{{ asset('assets/images/svgs/location-minus.svg') }}" width="50"
                                             height="50" class="mb-3" alt="modernize-img" />
                                         <p class="fw-semibold fs-3 text-dark mb-1">Outcoming Data</p>
                                         <h5 class="fw-semibold text-dark mb-0">{{ $totalOutcoming }}</h5>
@@ -115,7 +122,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div> --
+                        </div>
                         <div class="item">
                             <div class="card border-0 zoom-in bg-info-subtle shadow-none">
                                 <div class="card-body">
@@ -129,20 +136,20 @@
                             </div>
                         </div>
                         @if (Auth::user()->is_admin === 1)
-                        <div class="item">
-                            <div class="card border-0 zoom-in bg-info-subtle shadow-none">
-                                <div class="card-body">
-                                    <div class="text-center">
-                                        <img src="{{ asset('assets/images/svgs/users.svg') }}" width="50"
-                                            height="50" class="mb-3" alt="modernize-img" />
-                                        <p class="fw-semibold fs-3 text-dark mb-1">
-                                            Admin / Staff
-                                        </p>
-                                        <h5 class="fw-semibold text-dark mb-0">{{$totalStaff}}</h5>
+                            <div class="item">
+                                <div class="card border-0 zoom-in bg-info-subtle shadow-none">
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                            <img src="{{ asset('assets/images/svgs/users.svg') }}" width="50" height="50"
+                                                class="mb-3" alt="modernize-img" />
+                                            <p class="fw-semibold fs-3 text-dark mb-1">
+                                                Admin / Staff
+                                            </p>
+                                            <h5 class="fw-semibold text-dark mb-0">{{$totalStaff}}</h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         @endif
                         <div class="item">
                             <div class="card border-0 zoom-in bg-info-subtle shadow-none">
@@ -173,9 +180,43 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Script -->
     @include('layouts.admin.script')
+    <script>
+        if ($('#donut-chart').length > 0) {
+            var donutChart = {
+                chart: {
+                    height: 250,
+                    type: 'donut',
+                    toolbar: {
+                        show: false,
+                    }
+                },
+                colors: ['#0D1B39', '#0074ba', '#49beff', '#ffae1f'],
+                labels: {!! json_encode($chartData['name']) !!},
+                series: {!! json_encode($chartData['series']) !!},
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            }
+
+            var donut = new ApexCharts(
+                document.querySelector("#donut-chart"),
+                donutChart
+            );
+
+            donut.render();
+        }
+    </script>
 </body>
 
 </html>

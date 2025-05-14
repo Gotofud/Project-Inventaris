@@ -36,7 +36,13 @@ class HomeController extends Controller
         $totalOutcoming = outcomingItems::count();
         $totalLoan = loanData::count();
         $totalReturn = loanData::where('status', 1)->count();
-        return view('welcome', compact('totalStaff','totalData','totalCategory','totalIncoming','totalOutcoming','totalLoan','totalReturn'));
+
+        $chartData = [
+            'name' => ['Total Incoming','Total Outcoming','Total Loan', 'Total Return'],
+            'series' => [$totalIncoming, $totalOutcoming, $totalLoan, $totalReturn]
+        ];
+
+        return view('welcome', compact('chartData','totalStaff','totalData','totalCategory','totalIncoming','totalOutcoming','totalLoan','totalReturn'));
     }
 
     
