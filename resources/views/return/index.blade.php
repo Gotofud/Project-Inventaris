@@ -61,6 +61,8 @@
                             <div class="d-sm-flex justify-content-between align-items-start">
                                 <h4 class="card-title"><i class="ti ti-folders"></i>Return Data</h4>
                                 <div class="action">
+                                    <a href="" class="btn btn-danger btn-md text-white mb-3 me-0"><i
+                                            class="ti ti-refresh"></i></a>
                                     <a href="{{ route('return.export') }}" type="button"
                                         class="btn btn-success btn-md text-white mb-3 me-0"><i
                                             class=" ti ti-file-spreadsheet"></i> Export Excel</a>
@@ -68,7 +70,27 @@
                             </div>
                             <!-- Table -->
                             <div class="table-responsive mb-3">
-                                <table class="table table-striped table-bordered text-nowrap align-middle loan">
+                                <table class="table table-striped table-bordered text-nowrap align-middle return">
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label>Category Filter</label>
+                                            <select id="categoryFilter" class="form-select">
+                                                <option value="">All Category</option>
+                                                @foreach ($r_Category as $filter)
+                                                    <option value="{{ $filter->category_name }}">{{ $filter->category_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Date Filter</label>
+                                            <div class="input-group">
+                                                <input type="date" id="startDate" class="form-control"
+                                                    placeholder="from">
+                                                <input type="date" id="endDate" class="form-control" placeholder="To">
+                                            </div>
+                                        </div>
+                                    </div>
                                     <thead>
                                         <!-- start row -->
                                         <tr>
@@ -121,10 +143,40 @@
             <!-- Script -->
             @include('layouts.admin.script')
 </body>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.loan').DataTable();
+<script>
+$(document).ready(function () {
+    var table = $('.return').DataTable();
+
+    // Category Filter
+    $('#categoryFilter').on('change', function () {
+        let selected = $(this).val();
+        // Filter Column (3) Category
+        table.column(4).search(selected).draw();
     });
+
+    // Date Picker
+    $('#startDate, #endDate').on('change', function () {
+        let start = $('#startDate').val();
+        let end = $('#endDate').val();
+
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            let date = data[8]; // Column Date (5)
+            let formatted = date.split(" ")[0]; // Take Y-m-d
+
+            if (
+                (!start || formatted >= start) &&
+                (!end || formatted <= end)
+            ) {
+                return true;
+            }
+            return false;
+        });
+
+        table.draw();
+    });
+});
+
 </script>
+
 
 </html>

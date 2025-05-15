@@ -23,7 +23,8 @@ class incomingItemController extends Controller
         $icm_item = incomingItems::all();
         $icmMaindata = mainDatas::all();
         $icm_out = outcomingItems::all();
-        return view('incoming-item.index', compact('icm_item', 'icmMaindata', 'icm_out'));
+        $icmCategory = Category::all();
+        return view('incoming-item.index', compact('icm_item', 'icmMaindata', 'icm_out','icmCategory'));
     }
 
     public function export()

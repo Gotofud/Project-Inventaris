@@ -98,6 +98,7 @@
                             <div class="d-sm-flex justify-content-between align-items-start">
                                 <h4 class="card-title"><i class="ti ti-folders"></i>Main Data</h4>
                                 <div class="action">
+                                    <a href="" class="btn btn-danger btn-md text-white mb-3 me-0"><i class="ti ti-refresh"></i></a>
                                     <a type="button" class="btn btn-primary btn-md text-white mb-3 me-0"
                                         data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i
                                             class=" ti ti-folder-plus"></i></a>
@@ -161,13 +162,13 @@
                             <!-- Table -->
                             <div class="table-responsive mb-3">
                                 <table class="table table-striped table-bordered text-nowrap align-middle mainData">
-                                               <div class="row mb-3">
+                                    <div class="row mb-3">
                                         <div class="col-md-3">
                                             <label>Category Filter</label>
                                             <select id="categoryFilter" class="form-select">
                                                 <option value="">All Category</option>
-                                                @foreach ($category as $cat)
-                                                    <option value="{{ $cat->category_name }}">{{ $cat->category_name }}
+                                                @foreach ($category as $filter)
+                                                    <option value="{{ $filter->category_name }}">{{ $filter->category_name }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -177,8 +178,7 @@
                                             <div class="input-group">
                                                 <input type="date" id="startDate" class="form-control"
                                                     placeholder="from">
-                                                <input type="date" id="endDate" class="form-control"
-                                                    placeholder="To">
+                                                <input type="date" id="endDate" class="form-control" placeholder="To">
                                             </div>
                                         </div>
                                     </div>
@@ -292,38 +292,40 @@
             <!-- Script -->
             @include('layouts.admin.script')
 </body>
+
 <script>
-    $(document).ready(function () {
-        var table = $('.mainData').DataTable();
+$(document).ready(function () {
+    var table = $('.mainData').DataTable();
 
-        // Filter Kategori
-        $('#categoryFilter').on('change', function () {
-            var selected = $(this).val().toLowerCase();
-            table.rows().every(function () {
-                var category = $(this.node()).data('category').toLowerCase();
-                if (selected === "" || category === selected) {
-                    $(this.node()).show();
-                } else {
-                    $(this.node()).hide();
-                }
-            });
-        });
-
-        // Filter Tanggal
-        $('#startDate, #endDate').on('change', function () {
-            var start = $('#startDate').val();
-            var end = $('#endDate').val();
-
-            table.rows().every(function () {
-                var date = $(this.node()).data('date');
-                if ((!start || date >= start) && (!end || date <= end)) {
-                    $(this.node()).show();
-                } else {
-                    $(this.node()).hide();
-                }
-            });
-        });
+    // Category Filter
+    $('#categoryFilter').on('change', function () {
+        let selected = $(this).val();
+        // Filter Column (3) Category
+        table.column(3).search(selected).draw();
     });
+
+    // Date Picker
+    $('#startDate, #endDate').on('change', function () {
+        let start = $('#startDate').val();
+        let end = $('#endDate').val();
+
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            let date = data[5]; // Column Date (5)
+            let formatted = date.split(" ")[0]; // Take Y-m-d
+
+            if (
+                (!start || formatted >= start) &&
+                (!end || formatted <= end)
+            ) {
+                return true;
+            }
+            return false;
+        });
+
+        table.draw();
+    });
+});
+
 </script>
 
 

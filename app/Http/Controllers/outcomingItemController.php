@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\mainDatas;
 use App\Models\outcomingItems;
@@ -19,8 +20,8 @@ class outcomingItemController extends Controller
     {
         $out_item = outcomingItems::all();
         $outMaindata = mainDatas::all();
-        
-        return view('outcoming-item.index', compact('out_item', 'outMaindata'));
+        $outCategory = Category::all();
+        return view('outcoming-item.index', compact('out_item', 'outMaindata','outCategory'));
     }
 
      public function export()

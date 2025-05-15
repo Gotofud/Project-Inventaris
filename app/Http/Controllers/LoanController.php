@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\loanData;
 use App\Models\mainDatas;
@@ -19,8 +20,8 @@ class LoanController extends Controller
     {
         $loan = loanData::all();
         $l_Maindata = mainDatas::all();
-
-        return view('loan.index', compact('loan', 'l_Maindata'));
+        $l_Category = Category::all();
+        return view('loan.index', compact('loan', 'l_Maindata','l_Category'));
     }
 
     public function export()
