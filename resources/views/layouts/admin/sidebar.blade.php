@@ -68,6 +68,14 @@
                     </li>
                 @endif
                 <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{route('room.index')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-door"></i>
+                        </span>
+                        <span class="hide-menu">Room</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link" href="{{route('incoming-item.index')}}" aria-expanded="false">
                         <span>
                             <i class="ti ti-script-plus"></i>
@@ -105,7 +113,7 @@
             <div class="hstack gap-3">
                 @if (Auth::user()->is_admin === 1)
                     <div class="john-img">
-                        <img src="{{ asset('') }}assets/images/profile/user-1.jpg" class="rounded-circle" width="40"
+                        <img src="{{ asset('assets/images/profile/user-1.jpg') }}" class="rounded-circle" width="40"
                             height="40" alt="modernize-img" />
                     </div>
                 @else

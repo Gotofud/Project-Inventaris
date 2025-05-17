@@ -111,6 +111,7 @@
                                 </div>
                             </div>
                         </div>
+                        @if (Auth::user()->is_admin === 1)
                         <div class="item">
                             <div class="card border-0 zoom-in bg-info-subtle shadow-none">
                                 <div class="card-body">
@@ -123,6 +124,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                         <div class="item">
                             <div class="card border-0 zoom-in bg-info-subtle shadow-none">
                                 <div class="card-body">

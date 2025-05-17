@@ -22,17 +22,18 @@
   <div class="preloader">
     <img src="{{ asset('assets/images/icon.png') }}" alt="loader" class="lds-ripple img-fluid" />
   </div>
+
   <div id="main-wrapper" class="auth-customizer-none">
     <div class="position-relative overflow-hidden radial-gradient min-vh-100 w-100">
       <div class="position-relative z-index-5">
         <div class="row">
           <div class="col-xl-7 col-xxl-8">
             <a href="#" class="text-nowrap logo-img d-block px-4 py-8 w-100">
-              <img src="{{ asset('assets/images/logo.svg') }}" width="100"/>
+              <img src="{{ asset('assets/images/logo.svg') }}" width="100" />
             </a>
             <div class="d-none d-xl-flex align-items-center justify-content-center h-n80">
-              <img src="{{ asset('assets/images/backgrounds/maintenance.svg')}}" alt="modernize-img"
-                class="img-fluid" width="500">
+              <img src="{{ asset('assets/images/backgrounds/maintenance.svg')}}" alt="modernize-img" class="img-fluid"
+                width="500">
             </div>
           </div>
           <div class="col-xl-5 col-xxl-4">
