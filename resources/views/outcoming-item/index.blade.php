@@ -1,43 +1,8 @@
 @include('layouts.admin.header')
 
 <body>
-    @if (session('add_success'))
-        <div class="toast toast-onload align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
-            aria-atomic="true">
-            <div class="toast-body hstack align-items-start gap-6">
-                <i class="ti ti-circle-check fs-6"></i>
-                <div>
-                    <h5 class="text-white fs-3 mb-1">Outcoming Data Success</h5>
-                </div>
-                <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
-            </div>
-        </div>
-    @elseif (session('edit_success'))
-        <div class="toast toast-onload align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
-            aria-atomic="true">
-            <div class="toast-body hstack align-items-start gap-6">
-                <i class="ti ti-circle-check fs-6"></i>
-                <div>
-                    <h5 class="text-white fs-3 mb-1">Edit Data Success</h5>
-                </div>
-                <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
-            </div>
-        </div>
-    @elseif (session('delete_success'))
-        <div class="toast toast-onload align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
-            aria-atomic="true">
-            <div class="toast-body hstack align-items-start gap-6">
-                <i class="ti ti-circle-check fs-6"></i>
-                <div>
-                    <h5 class="text-white fs-3 mb-1">Delete Data Success</h5>
-                </div>
-                <button type="button" class="btn-close btn-close-white fs-2 m-0 ms-auto shadow-none" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
-            </div>
-        </div>
-    @endif
+    <!-- Toast -->
+    @include('layouts.alert.outcoming')
 
     <!-- Preloader -->
     <div class="preloader">
@@ -95,67 +60,7 @@
                                 </div>
                             </div>
                             <!-- Modal Form-->
-                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
-                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="staticBackdropLabel"><i
-                                                    class="ti ti-script-plus"></i> outcoming Item</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <!-- Form Input Group -->
-                                            <form action="{{ route('outcoming-item.store') }}" method="POST">
-                                                @csrf
-                                                <div class="input-group mb-3">
-                                                    <span class="input-group-text" id="basic-addon1"><i
-                                                            class="ti ti-category"></i></span>
-                                                    <select class="form-select select-with-image"
-                                                        aria-label="Default select example" name="item_id">
-                                                        <option selected disable>Select Data</option>
-                                                        @foreach ($outMaindata as $data)
-                                                            <option value="{{ $data->id }}">
-                                                                {{ $data->name }} | Stock : {{ $data->stock }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="input-group mb-3">
-                                                    <span class="input-group-text" id="basic-addon1"><i
-                                                            class="ti ti-calculator"></i></span>
-                                                    <input type="number" class="form-control" placeholder="Amount"
-                                                        aria-label="Amount" aria-describedby="basic-addon1"
-                                                        name="amount">
-                                                </div>
-                                                <div class="input-group mb-3">
-                                                    <span class="input-group-text" id="basic-addon1"><i
-                                                            class="ti ti-calendar"></i></span>
-                                                    <input type="date" class="form-control" placeholder="Entry Date"
-                                                        aria-label="Password" aria-describedby="basic-addon1"
-                                                        name="exit_date">
-                                                </div>
-                                                <div class="input-group mb-3">
-                                                    <span class="input-group-text" id="basic-addon1"><i
-                                                            class="ti ti-info-circle"></i></span>
-                                                    <textarea class="form-control" placeholder="Information"
-                                                        aria-label="info" aria-describedby="basic-addon1"
-                                                        name="info"></textarea>
-                                                </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary"><i
-                                                    class="ti ti-device-floppy"></i>Save</button>
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
-                                        </div>
-                                        </form>
-                                        <!-- End Form -->
-                                    </div>
-                                </div>
-                            </div>
+                             @include('layouts.modal.outcoming.add')
                             <!-- End Modal -->
                             <!-- Table -->
                             <div class="table-responsive mb-3">
@@ -166,7 +71,8 @@
                                             <select id="categoryFilter" class="form-select">
                                                 <option value="">All Category</option>
                                                 @foreach ($outCategory as $filter)
-                                                    <option value="{{ $filter->category_name }}">{{ $filter->category_name }}
+                                                    <option value="{{ $filter->category_name }}">
+                                                        {{ $filter->category_name }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -224,71 +130,7 @@
                                                 </td>
                                             </tr>
                                             <!-- Modal Form-->
-                                            <div class="modal fade" id="edit-{{ $data->id }}" data-bs-backdrop="static"
-                                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-                                                aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="staticBackdropLabel"><i
-                                                                    class="ti ti-script-plus"></i> Edit Item</h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <!-- Form Edit Group -->
-                                                            <form action="{{ route('outcoming-item.update', $data->id) }}"
-                                                                method="POST" enctype="multipart/form-data">
-                                                                @csrf
-                                                                @method('PUT')
-                                                                <div class="input-group mb-3">
-                                                                    <span class="input-group-text" id="basic-addon1"><i
-                                                                            class="ti ti-category"></i></span>
-                                                                    <select class="form-select"
-                                                                        aria-label="Default select example" name="item_id">
-                                                                        <option selected>Select Data</option>
-                                                                        @foreach ($outMaindata as $edit)
-                                                                            <option value="{{ $edit->id }}" {{ $data->item_id == $edit->id ? 'selected' : ''}}>
-                                                                                {{ $edit->name }}
-                                                                            </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                                <div class="input-group mb-3">
-                                                                    <span class="input-group-text" id="basic-addon1"><i
-                                                                            class="ti ti-calculator"></i></span>
-                                                                    <input type="number" class="form-control"
-                                                                        placeholder="Amount" aria-label="Amount"
-                                                                        aria-describedby="basic-addon1" name="amount"
-                                                                        value="{{ $data->amount }}">
-                                                                </div>
-                                                                <div class="input-group mb-3">
-                                                                    <span class="input-group-text" id="basic-addon1"><i
-                                                                            class="ti ti-calendar"></i></span>
-                                                                    <input type="date" class="form-control"
-                                                                        placeholder="Entry Date" aria-label="Password"
-                                                                        aria-describedby="basic-addon1" name="exit_date"
-                                                                        value="{{ $data->exit_date }}">
-                                                                </div>
-                                                                <div class="input-group mb-3">
-                                                                    <span class="input-group-text" id="basic-addon1"><i
-                                                                            class="ti ti-info-circle"></i></span>
-                                                                    <textarea class="form-control" placeholder="Information"
-                                                                        aria-label="info" aria-describedby="basic-addon1"
-                                                                        name="info">{{$data->info}}</textarea>
-                                                                </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"><i
-                                                                    class="ti ti-device-floppy"></i>Save</button>
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Close</button>
-                                                        </div>
-                                                        </form>
-                                                        <!-- End Edit Form -->
-                                                    </div>
-                                                </div>
-                                            </div>
+                                              @include('layouts.modal.outcoming.edit')
                                             <!-- End Modal -->
                                         @endforeach
                                         <!-- end row -->
@@ -304,37 +146,37 @@
             @include('layouts.admin.script')
 </body>
 <script>
-$(document).ready(function () {
-    var table = $('.outItem').DataTable();
+    $(document).ready(function () {
+        var table = $('.outItem').DataTable();
 
-    // Category Filter
-    $('#categoryFilter').on('change', function () {
-        let selected = $(this).val();
-        // Filter Column (3) Category
-        table.column(3).search(selected).draw();
-    });
-
-    // Date Picker
-    $('#startDate, #endDate').on('change', function () {
-        let start = $('#startDate').val();
-        let end = $('#endDate').val();
-
-        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-            let date = data[6]; // Column Date (5)
-            let formatted = date.split(" ")[0]; // Take Y-m-d
-
-            if (
-                (!start || formatted >= start) &&
-                (!end || formatted <= end)
-            ) {
-                return true;
-            }
-            return false;
+        // Category Filter
+        $('#categoryFilter').on('change', function () {
+            let selected = $(this).val();
+            // Filter Column (3) Category
+            table.column(3).search(selected).draw();
         });
 
-        table.draw();
+        // Date Picker
+        $('#startDate, #endDate').on('change', function () {
+            let start = $('#startDate').val();
+            let end = $('#endDate').val();
+
+            $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+                let date = data[6]; // Column Date (5)
+                let formatted = date.split(" ")[0]; // Take Y-m-d
+
+                if (
+                    (!start || formatted >= start) &&
+                    (!end || formatted <= end)
+                ) {
+                    return true;
+                }
+                return false;
+            });
+
+            table.draw();
+        });
     });
-});
 
 </script>
 
