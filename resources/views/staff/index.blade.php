@@ -89,7 +89,7 @@
                                                             </div>
                                                         @else
                                                             <div class="d-flex align-items-center gap-6">
-                                                                <img src="../assets/images/profile/user-3.jpg" width="45"
+                                                                 <img src="../assets/images/profile/user-2.jpg" width="45"
                                                                     class="rounded-circle" />
                                                                 <h6 class="mb-0"> {{ $data->name }}</h6>
                                                             </div>

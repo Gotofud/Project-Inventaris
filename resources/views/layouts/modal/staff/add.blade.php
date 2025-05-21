@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <!-- Form Input Group -->
-                <form action="{{ route('register') }}" method="POST">
+                <form action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="ti ti-user"></i></span>

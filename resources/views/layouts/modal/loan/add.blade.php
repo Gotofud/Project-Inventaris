@@ -21,7 +21,11 @@
                             <option selected>Select Data</option>
                             @foreach ($l_Maindata as $data)
                                 <option value="{{ $data->id }}">
-                                    {{ $data->name }} | Stock : {{ $data->stock }}
+                                    {{ $data->name }} | Stock :  @if ($data->stock > 0)
+                                    {{ $data->stock }}
+                                    @else
+                                    <span>Empty</span>
+                                    @endif
                                 </option>
                             @endforeach
                         </select>

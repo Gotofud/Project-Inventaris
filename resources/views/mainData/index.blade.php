@@ -111,7 +111,13 @@
                                                 <td>{{ $data->prd_code }}</td>
                                                 <td>{{ $data->name }}</td>
                                                 <td>{{ $data->category->category_name }}</td>
-                                                <td>{{ $data->stock }}</td>
+                                                <td>
+                                                @if ($data->stock > 0)
+                                                {{ $data->stock }}
+                                                @else
+                                                <span class="badge bg-danger text-white">Empty</span>
+                                                @endif
+                                            </td>
                                                 <td>{{ $data->created_at }}</td>
                                                 <td>
                                                     <form action="{{ route('mainData.destroy', $data->id) }}" method="POST">

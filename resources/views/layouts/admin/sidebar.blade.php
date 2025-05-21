@@ -68,14 +68,6 @@
                     </li>
                 @endif
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{route('room.index')}}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-door"></i>
-                        </span>
-                        <span class="hide-menu">Room</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
                     <a class="sidebar-link" href="{{route('incoming-item.index')}}" aria-expanded="false">
                         <span>
                             <i class="ti ti-script-plus"></i>

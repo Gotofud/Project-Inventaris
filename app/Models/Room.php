@@ -12,13 +12,12 @@ class Room extends Model
     protected $fillable = [
         'id',
         'room_code',
-        'room_name',
-        'item_id'
+        'room_name'
     ];
 
     public $timestamp = true;
 
-    public function mainDatas(){
-        return $this->belongsTo(mainDatas::class,'item_id','id');
+    public function rooms(){
+        return $this->hasMany(Room::class);
     }
 }

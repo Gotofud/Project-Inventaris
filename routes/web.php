@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomItemsController;
 use App\Models\outcomingItems;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\categoryController;
@@ -58,5 +59,3 @@ Route::get('/loan.export', [LoanController::class, 'export'])->name('loan.export
 // Return
 Route::resource('return',ReturnController::class);
 Route::get('/return.export', [ReturnController::class, 'export'])->name('return.export');
-// Room
-Route::resource('room', RoomController::class);
