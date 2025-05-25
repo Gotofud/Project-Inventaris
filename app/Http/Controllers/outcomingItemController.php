@@ -8,6 +8,7 @@ use App\Models\mainDatas;
 use App\Models\outcomingItems;
 use App\Exports\OutcomingExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class outcomingItemController extends Controller
 {
@@ -21,12 +22,21 @@ class outcomingItemController extends Controller
         $out_item = outcomingItems::all();
         $outMaindata = mainDatas::all();
         $outCategory = Category::all();
-        return view('outcoming-item.index', compact('out_item', 'outMaindata','outCategory'));
+        return view('outcoming-item.index', compact('out_item', 'outMaindata', 'outCategory'));
     }
 
-     public function export()
+    public function export()
     {
         return Excel::download(new OutcomingExport, 'Outcoming-Data.xlsx');
+    }
+
+    public function exportPDF()
+    {
+        $out_item = outcomingItems::all();
+
+        $pdf = Pdf::loadView('pdf.outcoming', compact('out_item'));
+
+        return $pdf->download('Outcoming-item.pdf'); // Langsung download
     }
 
 

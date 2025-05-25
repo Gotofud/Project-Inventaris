@@ -6,6 +6,7 @@ use App\Models\mainDatas;
 use App\Models\Category;
 use App\Exports\MainDataExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 
@@ -26,6 +27,15 @@ class mainDataController extends Controller
     public function export()
     {
         return Excel::download(new MainDataExport, 'Main-Data.xlsx');
+    }
+
+    public function exportPDF()
+    {
+        $mainData = mainDatas::all();
+
+        $pdf = Pdf::loadView('pdf.mainData', compact('mainData'));
+
+        return $pdf->download('Main-data.pdf'); // Langsung download
     }
 
 
@@ -108,12 +118,12 @@ class mainDataController extends Controller
      */
     public function update(Request $request, $id)
     {
-         $this->validate($request, [
+        $this->validate($request, [
             'name' => 'required|max:250',
             'category_id' => 'required',
             'img' => 'required'
         ]);
-        
+
         $mainData = mainDatas::findOrFail($id);
         $category = Category::all();
         if ($request->filled('prd_code')) {

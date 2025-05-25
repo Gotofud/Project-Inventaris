@@ -55,6 +55,9 @@
                                     <a href="{{ route('category.export') }}" type="button"
                                         class="btn btn-success btn-md text-white mb-3 me-0"><i
                                             class=" ti ti-file-spreadsheet"></i> Export Excel</a>
+                                    <a href="{{ route('category.exportPDF') }}" type="button"
+                                        class="btn btn-info btn-md text-white mb-3 me-0"><i
+                                            class=" ti ti-file-text"></i> Export PDF</a>
                                 </div>
 
                             </div>
@@ -69,6 +72,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Category</th>
+                                            <th>Total In Use</th>
                                             <th>Action</th>
                                         </tr>
                                         <!-- end row -->
@@ -82,6 +86,7 @@
                                             <tr>
                                                 <td>{{ $no++ }}</td>
                                                 <td>{{ $data->category_name }}</td>
+                                                <td>{{ $data->totalCategory }}</td>
                                                 <td>
                                                     <form action="{{ route('category.destroy', $data->id) }}" method="POST">
                                                         <a type="button" class="btn btn-warning" data-bs-toggle="modal"

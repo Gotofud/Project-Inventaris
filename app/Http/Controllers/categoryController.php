@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\mainDatas;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Exports\CategoryExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class categoryController extends Controller
 {
@@ -16,8 +18,27 @@ class categoryController extends Controller
      */
     public function index()
     {
-        $category = Category::all();
+        $category = Category::all()->map(function ($item) {
+            $item->totalCategory = mainDatas::where('category_id', $item->id)->count();
+            return $item;
+        });
         return view('category.index', compact('category'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new CategoryExport, 'Category.xlsx');
+    }
+    public function exportPDF()
+    {
+        $category = Category::all()->map(function ($item) {
+            $item->totalCategory = mainDatas::where('category_id', $item->id)->count();
+            return $item;
+        });
+
+        $pdf = Pdf::loadView('pdf.category', compact('category'));
+
+        return $pdf->download('Category.pdf'); // Langsung download
     }
 
     /**
@@ -47,11 +68,6 @@ class categoryController extends Controller
         $category->save();
 
         return redirect()->route('category.index')->with('category_success', 'success');
-    }
-
-     public function export()
-    {
-        return Excel::download(new CategoryExport, 'Category.xlsx');
     }
 
     /**
@@ -85,7 +101,7 @@ class categoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-          $this->validate($request, [
+        $this->validate($request, [
             'name' => 'required|max:200'
         ]);
 
@@ -104,9 +120,9 @@ class categoryController extends Controller
      */
     public function destroy($id)
     {
-         $category = Category::findOrFail($id);
-         $category->delete();
+        $category = Category::findOrFail($id);
+        $category->delete();
 
-         return redirect()->route('category.index')->with('delete_success', 'success');
+        return redirect()->route('category.index')->with('delete_success', 'success');
     }
 }

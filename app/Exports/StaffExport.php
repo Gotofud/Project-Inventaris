@@ -10,11 +10,11 @@ class StaffExport implements FromCollection, WithHeadings
 {
     public function collection()
     {
-        return User::get()->map(function ($item) {
+        return User::where('is_admin',0)->get()->map(function ($item) {
             return [
                 'name' => $item->name,
                 'email' => $item->email,
-                'is_admin' => $item->is_admin === 0 ? 'Admin' : 'Staff',
+                'is_admin' => $item->is_admin === 1 ? 'Admin' : 'Staff',
             ];
         });
     }

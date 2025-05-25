@@ -57,6 +57,9 @@
                                     <a href="{{ route('incoming.export') }}" type="button"
                                         class="btn btn-success btn-md text-white mb-3 me-0"><i
                                             class=" ti ti-file-spreadsheet"></i> Export Excel</a>
+                                    <a href="{{ route('incoming.exportPDF') }}" type="button"
+                                        class="btn btn-info btn-md text-white mb-3 me-0"><i
+                                            class=" ti ti-file-text"></i> Export PDF</a>
                                 </div>
                             </div>
                             <!-- Modal Form-->

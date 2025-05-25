@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Exports\StaffExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class StaffController extends Controller
 {
@@ -25,6 +26,15 @@ class StaffController extends Controller
     public function export()
     {
         return Excel::download(new StaffExport, 'Staff.xlsx');
+    }
+
+    public function exportPDF()
+    {
+        $staff = User::all();
+
+        $pdf = Pdf::loadView('pdf.staff', compact('staff'));
+
+        return $pdf->download('Staff-data.pdf'); // Langsung download
     }
 
     /**
@@ -67,7 +77,7 @@ class StaffController extends Controller
      */
     public function edit($id)
     {
-//  
+        //  
     }
 
     /**
@@ -78,30 +88,30 @@ class StaffController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-{
-    $staff = User::findOrFail($id);
+    {
+        $staff = User::findOrFail($id);
 
-    $request->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($id)],
-    ]);
-
-    $staff->name = $request->name;
-    $staff->email = $request->email;
-
-    // Hanya update password kalau user isi
-    if ($request->filled('password')) {
         $request->validate([
-            'password' => ['string', 'min:8', 'confirmed'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($id)],
         ]);
 
-        $staff->password = Hash::make($request->password);
+        $staff->name = $request->name;
+        $staff->email = $request->email;
+
+        // Hanya update password kalau user isi
+        if ($request->filled('password')) {
+            $request->validate([
+                'password' => ['string', 'min:8', 'confirmed'],
+            ]);
+
+            $staff->password = Hash::make($request->password);
+        }
+
+        $staff->save();
+
+        return redirect()->route('staff.index')->with('edit_success', 'Staff berhasil diupdate!');
     }
-
-    $staff->save();
-
-    return redirect()->route('staff.index')->with('edit_success', 'Staff berhasil diupdate!');
-}
 
     /**
      * Remove the specified resource from storage.

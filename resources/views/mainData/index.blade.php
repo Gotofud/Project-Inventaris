@@ -1,7 +1,7 @@
 @include('layouts.admin.header')
 
 <body>
-   <!-- Toast -->
+    <!-- Toast -->
     @include('layouts.alert.mainData')
 
     <!-- Preloader -->
@@ -57,6 +57,9 @@
                                     <a href="{{ route('mainData.export') }}" type="button"
                                         class="btn btn-success btn-md text-white mb-3 me-0"><i
                                             class=" ti ti-file-spreadsheet"></i> Export Excel</a>
+                                    <a href="{{ route('mainData.exportPDF') }}" type="button"
+                                        class="btn btn-info btn-md text-white mb-3 me-0"><i
+                                            class=" ti ti-file-text"></i> Export PDF</a>
                                 </div>
                             </div>
                             <!-- Modal Form Add data-->
@@ -112,13 +115,13 @@
                                                 <td>{{ $data->name }}</td>
                                                 <td>{{ $data->category->category_name }}</td>
                                                 <td>
-                                                @if ($data->stock > 0)
-                                                {{ $data->stock }}
-                                                @else
-                                                <span class="badge bg-danger text-white">Empty</span>
-                                                @endif
-                                            </td>
-                                                <td>{{ $data->created_at }}</td>
+                                                    @if ($data->stock > 0)
+                                                        {{ $data->stock }}
+                                                    @else
+                                                        <span class="badge bg-danger text-white">Empty</span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $data->created_at->format('Y-m-d') }}</td>
                                                 <td>
                                                     <form action="{{ route('mainData.destroy', $data->id) }}" method="POST">
                                                         <a type="button" class="btn btn-warning" data-bs-toggle="modal"
@@ -134,7 +137,7 @@
                                                 </td>
                                             </tr>
                                             <!-- Edit Modal Form -->
-                                           @include('layouts.modal.mainData.edit')
+                                            @include('layouts.modal.mainData.edit')
                                             <!-- End Edit Modal -->
                                         @endforeach
                                         <!-- end row -->

@@ -57,10 +57,13 @@
                                     <a href="{{ route('outcoming.export') }}" type="button"
                                         class="btn btn-success btn-md text-white mb-3 me-0"><i
                                             class=" ti ti-file-spreadsheet"></i> Export Excel</a>
+                                    <a href="{{ route('outcoming.exportPDF') }}" type="button"
+                                        class="btn btn-info btn-md text-white mb-3 me-0"><i
+                                            class=" ti ti-file-text"></i> Export PDF</a>
                                 </div>
                             </div>
                             <!-- Modal Form-->
-                             @include('layouts.modal.outcoming.add')
+                            @include('layouts.modal.outcoming.add')
                             <!-- End Modal -->
                             <!-- Table -->
                             <div class="table-responsive mb-3">
@@ -130,7 +133,7 @@
                                                 </td>
                                             </tr>
                                             <!-- Modal Form-->
-                                              @include('layouts.modal.outcoming.edit')
+                                            @include('layouts.modal.outcoming.edit')
                                             <!-- End Modal -->
                                         @endforeach
                                         <!-- end row -->

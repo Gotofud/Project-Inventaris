@@ -66,6 +66,9 @@
                                     <a href="{{ route('return.export') }}" type="button"
                                         class="btn btn-success btn-md text-white mb-3 me-0"><i
                                             class=" ti ti-file-spreadsheet"></i> Export Excel</a>
+                                    <a href="{{ route('return.exportPDF') }}" type="button"
+                                        class="btn btn-info btn-md text-white mb-3 me-0"><i
+                                            class=" ti ti-file-text"></i> Export PDF</a>
                                 </div>
                             </div>
                             <!-- Table -->
@@ -77,7 +80,8 @@
                                             <select id="categoryFilter" class="form-select">
                                                 <option value="">All Category</option>
                                                 @foreach ($r_Category as $filter)
-                                                    <option value="{{ $filter->category_name }}">{{ $filter->category_name }}
+                                                    <option value="{{ $filter->category_name }}">
+                                                        {{ $filter->category_name }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -144,37 +148,37 @@
             @include('layouts.admin.script')
 </body>
 <script>
-$(document).ready(function () {
-    var table = $('.return').DataTable();
+    $(document).ready(function () {
+        var table = $('.return').DataTable();
 
-    // Category Filter
-    $('#categoryFilter').on('change', function () {
-        let selected = $(this).val();
-        // Filter Column (3) Category
-        table.column(4).search(selected).draw();
-    });
-
-    // Date Picker
-    $('#startDate, #endDate').on('change', function () {
-        let start = $('#startDate').val();
-        let end = $('#endDate').val();
-
-        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-            let date = data[8]; // Column Date (5)
-            let formatted = date.split(" ")[0]; // Take Y-m-d
-
-            if (
-                (!start || formatted >= start) &&
-                (!end || formatted <= end)
-            ) {
-                return true;
-            }
-            return false;
+        // Category Filter
+        $('#categoryFilter').on('change', function () {
+            let selected = $(this).val();
+            // Filter Column (3) Category
+            table.column(4).search(selected).draw();
         });
 
-        table.draw();
+        // Date Picker
+        $('#startDate, #endDate').on('change', function () {
+            let start = $('#startDate').val();
+            let end = $('#endDate').val();
+
+            $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+                let date = data[8]; // Column Date (5)
+                let formatted = date.split(" ")[0]; // Take Y-m-d
+
+                if (
+                    (!start || formatted >= start) &&
+                    (!end || formatted <= end)
+                ) {
+                    return true;
+                }
+                return false;
+            });
+
+            table.draw();
+        });
     });
-});
 
 </script>
 

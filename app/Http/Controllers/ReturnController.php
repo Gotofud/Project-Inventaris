@@ -8,6 +8,7 @@ use App\Models\loanData;
 use App\Models\mainDatas;
 use App\Exports\ReturnExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class ReturnController extends Controller
@@ -22,12 +23,21 @@ class ReturnController extends Controller
         $loan = loanData::all();
         $r_Maindata = mainDatas::all();
         $r_Category = Category::all();
-        return view('return.index', compact('loan','r_Maindata','r_Category'));
+        return view('return.index', compact('loan', 'r_Maindata', 'r_Category'));
     }
 
-     public function export()
+    public function export()
     {
         return Excel::download(new ReturnExport, 'Return-data.xlsx');
+    }
+
+    public function exportPDF()
+    {
+        $loan = loanData::all();
+
+        $pdf = Pdf::loadView('pdf.return', compact('loan'));
+
+        return $pdf->download('Return-data.pdf'); // Langsung download
     }
 
     /**

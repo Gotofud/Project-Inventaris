@@ -10,6 +10,7 @@ use App\Models\outcomingItems;
 use Illuminate\Http\Request;
 use App\Exports\IncomingExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class incomingItemController extends Controller
 {
@@ -30,6 +31,14 @@ class incomingItemController extends Controller
     public function export()
     {
         return Excel::download(new incomingExport, 'icm_item-Data.xlsx');
+    }
+       public function exportPDF()
+    {
+        $icm_item = incomingItems::all();
+
+        $pdf = Pdf::loadView('pdf.incoming', compact('icm_item'));
+
+        return $pdf->download('Incoming-data.pdf'); // Langsung download
     }
 
 

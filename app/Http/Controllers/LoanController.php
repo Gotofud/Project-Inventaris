@@ -8,6 +8,7 @@ use App\Models\loanData;
 use App\Models\mainDatas;
 use App\Exports\LoanExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LoanController extends Controller
 {
@@ -21,12 +22,21 @@ class LoanController extends Controller
         $loan = loanData::all();
         $l_Maindata = mainDatas::all();
         $l_Category = Category::all();
-        return view('loan.index', compact('loan', 'l_Maindata','l_Category'));
+        return view('loan.index', compact('loan', 'l_Maindata', 'l_Category'));
     }
 
     public function export()
     {
         return Excel::download(new LoanExport, 'Loan-data.xlsx');
+    }
+
+    public function exportPDF()
+    {
+        $loan = loanData::all();
+
+        $pdf = Pdf::loadView('pdf.loan', compact('loan'));
+
+        return $pdf->download('Loan-Data.pdf'); // Langsung download
     }
 
 

@@ -57,6 +57,9 @@
                                     <a href="{{ route('loan.export') }}" type="button"
                                         class="btn btn-success btn-md text-white mb-3 me-0"><i
                                             class=" ti ti-file-spreadsheet"></i> Export Excel</a>
+                                    <a href="{{ route('loan.exportPDF') }}" type="button"
+                                        class="btn btn-info btn-md text-white mb-3 me-0"><i
+                                            class=" ti ti-file-text"></i> Export PDF</a>
                                 </div>
                             </div>
                             <!-- Modal Form-->
@@ -160,7 +163,7 @@
                                                 </td>
                                             </tr>
                                             <!-- Modal Form-->
-                                              @include('layouts.modal.loan.edit')
+                                            @include('layouts.modal.loan.edit')
                                             <!-- End Modal -->
                                         @endforeach
                                         <!-- end row -->
