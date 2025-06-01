@@ -17,7 +17,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="ti ti-category"></i></span>
-                        <select class="form-select" aria-label="Default select example" name="category_id">
+                        <select class="form-select" aria-label="Default select example" name="category_id" >
                             <option selected>Select Category</option>
                             @foreach ($category as $data)
                                 <option value="{{ $data->id }}">{{ $data->category_name }}

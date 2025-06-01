@@ -58,6 +58,7 @@
             border-radius: 4px;
             font-weight: bold;
         }
+
         .return {
             display: inline-block;
             background-color: #13deb9;
@@ -95,7 +96,7 @@
                 <th>Category</th>
                 <th>Amount</th>
                 <th>Status</th>
-                <td>Info</td>
+                <th>Info</th>
                 <th>Loan At</th>
             </tr>
             <!-- end row -->
@@ -127,6 +128,10 @@
         </tbody>
 
     </table>
+
+    <div class="footer">
+         © Copyright {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('Y') }} Dutory.
+    </div>
 </body>
 
 </html>

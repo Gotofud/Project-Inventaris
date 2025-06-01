@@ -109,6 +109,9 @@
             <!-- end row -->
         </tbody>
     </table>
+    <div class="footer">
+        © Copyright {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('Y') }} Dutory.
+    </div>
 </body>
 
 </html>

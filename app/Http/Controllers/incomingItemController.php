@@ -60,6 +60,14 @@ class incomingItemController extends Controller
      */
     public function store(Request $request)
     {
+         $this->validate($request, [
+            'amount' => 'required|min:1',
+            'item_id' => 'required',
+            'entry_date' => 'required',
+            'info' => 'required'
+        ]);
+
+
         $icm_item = new incomingItems();
         $lastRecord = incomingItems::latest('id')->first();
         $lastId = $lastRecord ? $lastRecord->id : 0;
@@ -111,6 +119,13 @@ class incomingItemController extends Controller
      */
     public function update(Request $request, $id)
     {
+         $this->validate($request, [
+            'amount' => 'required|min:1',
+            'item_id' => 'required',
+            'entry_date' => 'required',
+            'info' => 'required'
+        ]);
+        
         $icm_item = incomingItems::findOrFail($id);
         $icmMaindata = mainDatas::findOrFail($icm_item->item_id);
 

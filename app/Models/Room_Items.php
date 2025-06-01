@@ -18,10 +18,13 @@ class Room_Items extends Model
 
     public $timestamp = true;
 
-    public function mainData(){
-        return $this->belongsTo(mainDatas::class,'item_id','id');
+    public function room()
+    {
+        return $this->belongsTo(\App\Models\Room::class, 'rooms_id');
     }
-    public function rooms(){
-        return $this->belongsTo(Room::class,'rooms_id','id');
+
+    public function mainData()
+    {
+        return $this->belongsTo(\App\Models\mainDatas::class, 'item_id');
     }
 }

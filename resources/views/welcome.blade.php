@@ -30,32 +30,22 @@
                 <div class="container-fluid">
 
                     <!-- Welcome Card -->
-                    <div class="card w-100 bg-light shadow-sm border-0 rounded-3 mb-4">
+                    <div class="card w-100 bg-light shadow-sm border-0 rounded-3 mb-4" style="background-image: url('{{ asset('assets/images/backgrounds/profilebg.jpg') }}')">
                         <div class="card-body position-relative">
                             <div class="row align-items-center">
                                 <div class="col-md-8">
-                                    <div class="d-flex align-items-center mb-4">
+                                    <div class="d-flex align-items-center">
                                         <img src="{{ Auth::user()->is_admin ? asset('assets/images/profile/user-1.jpg') : asset('assets/images/profile/user-3.jpg') }}"
                                             class="rounded-circle me-3" width="48" height="48" alt="profile" />
                                         <div>
-                                            <h5 class="mb-0 fw-bold">Welcome back, {{ Auth::user()->name }}!</h5>
+                                            <h1 class="mb-0 fw-bold">Welcome back, <b>{{ Auth::user()->name }}!</b></h1>
                                             <p class="mb-0 text-muted">Here is a quick summary of your data</p>
                                         </div>
                                     </div>
-                                    <div class="d-flex gap-4">
-                                        <div>
-                                            <h4 class="fw-semibold mb-0 text-primary">{{ $totalIncoming }}</h4>
-                                            <small class="text-muted">Total Incoming</small>
-                                        </div>
-                                        <div>
-                                            <h4 class="fw-semibold mb-0 text-warning">{{ $totalLoan }}</h4>
-                                            <small class="text-muted">Total Loan</small>
-                                        </div>
-                                    </div>
                                 </div>
-                                <div class="col-md-4">
+                                <!-- <div class="col-md-2">
                                     <img src="{{ asset('assets/images/backgrounds/welcome-bg.svg') }}" alt="welcome">
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -155,7 +145,7 @@
                     </div>
 
                     <!-- Donut Chart -->
-                    <div class="card border-0 shadow-sm rounded-3 mb-4">
+                    <div class="card border-0 shadow-sm rounded-3 mb-4" style="background-image: url('{{ asset('assets/images/backgrounds/active-bg.png') }}')">
                         <div class="card-body">
                             <h5 class="card-title mb-3 fw-bold">Data Chart Overview</h5>
                             <div id="donut-chart"></div>

@@ -58,6 +58,13 @@ class outcomingItemController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'amount' => 'required|min:1',
+            'item_id' => 'required',
+            'exit_date' => 'required',
+            'info' => 'required'
+        ]);
+
         $out_item = new outcomingItems();
         $lastRecord = outcomingItems::latest('id')->first();
         $lastId = $lastRecord ? $lastRecord->id : 0;
@@ -65,7 +72,15 @@ class outcomingItemController extends Controller
 
         $out_item->out_code = $out_code;
 
+
+
         $outMaindata = mainDatas::findOrFail($request->item_id);
+        // Cek stok cukup
+        if ($outMaindata->stock < $request->amount) {
+            return redirect()->back()->with('error', "Stok untuk item {$outMaindata->name} tidak cukup atau kosong.");
+        }
+
+
         $outMaindata->stock -= $request->amount;
         $outMaindata->save();
 
@@ -109,16 +124,50 @@ class outcomingItemController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'amount' => 'required|integer|min:1',
+            'item_id' => 'required|exists:maindatas,id',
+            'exit_date' => 'required',
+            'info' => 'required'
+        ]);
+
         $out_item = outcomingItems::findOrFail($id);
-        $outMaindata = mainDatas::findOrFail($out_item->item_id);
 
-        // Tambahkan kembali jumlah sebelumnya ke stok
-        $outMaindata->stock += $out_item->amount;
+        // Jika item_id tidak berubah
+        if ($out_item->item_id == $request->item_id) {
+            $mainData = mainDatas::findOrFail($out_item->item_id);
 
-        // Kurangi stok dengan jumlah baru
-        $outMaindata->stock -= $request->amount;
-        $outMaindata->save();
+            // Kembalikan stok lama
+            $mainData->stock += $out_item->amount;
 
+            // Cek stok cukup untuk jumlah baru
+            if ($mainData->stock < $request->amount) {
+                return redirect()->back()->with('error', "Stok untuk item {$mainData->name} tidak cukup atau kosong.");
+            }
+
+            // Kurangi stok dengan jumlah baru
+            $mainData->stock -= $request->amount;
+            $mainData->save();
+        } else {
+            // Jika item_id berubah
+            $oldMainData = mainDatas::findOrFail($out_item->item_id);
+            $newMainData = mainDatas::findOrFail($request->item_id);
+
+            // Kembalikan stok lama
+            $oldMainData->stock += $out_item->amount;
+            $oldMainData->save();
+
+            // Cek stok cukup untuk item baru
+            if ($newMainData->stock < $request->amount) {
+                return redirect()->back()->with('error', "Stok untuk item {$newMainData->name} tidak cukup atau kosong.");
+            }
+
+            // Kurangi stok item baru
+            $newMainData->stock -= $request->amount;
+            $newMainData->save();
+        }
+
+        // Update data keluar
         $lastRecord = outcomingItems::latest('id')->first();
         $lastId = $lastRecord ? $lastRecord->id : 0;
         $out_code = 'OUTM-' . str_pad($lastId + 1, 4, '0', STR_PAD_LEFT);

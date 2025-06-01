@@ -23,7 +23,8 @@
                     <script>
                         let table = new DataTable('#myTable');
                     </script>
-                    <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
+                    <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4"
+                    style="background-image: url('{{ asset('assets/images/backgrounds/profilebg.jpg') }}')">
                         <div class="card-body px-4 py-3">
                             <div class="row align-items-center">
                                 <div class="col-9">
@@ -92,7 +93,7 @@
                                                         </div>
                                                     @else
                                                         <div class="d-flex align-items-center gap-6">
-                                                            <img src="../assets/images/profile/user-2.jpg" width="45"
+                                                            <img src="../assets/images/profile/user-3.jpg" width="45"
                                                                 class="rounded-circle" />
                                                             <h6 class="mb-0"> {{ $data->name }}</h6>
                                                         </div>

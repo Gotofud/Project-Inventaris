@@ -58,6 +58,15 @@ class LoanController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'amount' => 'required|min:1',
+            'item_id' => 'required',
+            'loan_date' => 'required',
+            'info' => 'required',
+            'brws_name' => 'required'
+        ]);
+
+
         $loan = new LoanData();
         $lastRecord = LoanData::latest('id')->first();
         $lastId = $lastRecord ? $lastRecord->id : 0;
@@ -66,6 +75,9 @@ class LoanController extends Controller
         $loan->loan_code = $loan_code;
 
         $l_Maindata = mainDatas::findOrFail($request->item_id);
+        if ($l_Maindata->stock < $request->amount) {
+            return redirect()->back()->with('error', "Stok untuk item {$l_Maindata->name} tidak cukup atau kosong.");
+        }
         $l_Maindata->stock -= $request->amount;
         $l_Maindata->save();
 
@@ -125,38 +137,59 @@ class LoanController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'amount' => 'required|integer|min:1',
+            'item_id' => 'required|exists:maindatas,id',
+            'loan_date' => 'required',
+            'info' => 'required',
+            'brws_name' => 'required'
+        ]);
+
         $loan = loanData::findOrFail($id);
-        $l_Maindata = mainDatas::all();
-        if ($request->filled('loan_code')) {
-            $request->validate([
-                'loan_code' => ['string', 'confirmed'],
-            ]);
 
-            $lastRecord = loanData::latest('id')->first();
-            $lastId = $lastRecord ? $lastRecord->id : 0;
-            $loan_code = 'LOAN-' . str_pad($lastId + 1, 4, '0', STR_PAD_LEFT);
-            $loan->loan_code = $loan_code;
+        // Jika item_id tidak berubah
+        if ($loan->item_id == $request->item_id) {
+            $mainData = mainDatas::findOrFail($loan->item_id);
 
+            // Kembalikan stok lama
+            $mainData->stock += $loan->amount;
+
+            // Cek stok cukup untuk jumlah baru
+            if ($mainData->stock < $request->amount) {
+                return redirect()->back()->with('error', "Stok untuk item {$mainData->name} tidak cukup atau kosong.");
+            }
+
+            // Kurangi stok dengan jumlah baru
+            $mainData->stock -= $request->amount;
+            $mainData->save();
+        } else {
+            // Jika item_id berubah
+            $oldMainData = mainDatas::findOrFail($loan->item_id);
+            $newMainData = mainDatas::findOrFail($request->item_id);
+
+            // Kembalikan stok lama ke item lama
+            $oldMainData->stock += $loan->amount;
+            $oldMainData->save();
+
+            // Cek stok cukup untuk item baru
+            if ($newMainData->stock < $request->amount) {
+                return redirect()->back()->with('error', "Stok untuk item {$newMainData->name} tidak cukup atau kosong.");
+            }
+
+            // Kurangi stok item baru
+            $newMainData->stock -= $request->amount;
+            $newMainData->save();
         }
 
-        $lMaindata = mainDatas::findOrFail($loan->item_id);
-        // Tambahkan kembali jumlah sebelumnya ke stok
-        $lMaindata->stock += $loan->amount;
-
-        // Kurangi stok dengan jumlah baru
-        $lMaindata->stock -= $request->amount;
-        $lMaindata->save();
-
+        // Update data pinjam
         $loan->amount = $request->amount;
         $loan->item_id = $request->item_id;
         $loan->loan_date = $request->loan_date;
         $loan->brws_name = $request->brws_name;
         $loan->info = $request->info;
-
-
         $loan->save();
 
-        return redirect()->route('loan.index')->with('edit_success', 'data has been added');
+        return redirect()->route('loan.index')->with('edit_success', 'data has been updated');
     }
 
     /**

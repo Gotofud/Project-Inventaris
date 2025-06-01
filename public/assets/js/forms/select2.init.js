@@ -1,7 +1,20 @@
 //
 // For select 2
 //
-$(".select2").select2();
+ $('.repeater').repeater({
+            show: function () {
+                $(this).slideDown();
+
+                // Re-init select2 untuk elemen baru
+                $(this).find('.select2').select2({
+                    dropdownParent: $('#room_items'),
+                    width: '100%'
+                });
+            },
+            hide: function (deleteElement) {
+                $(this).slideUp(deleteElement);
+            }
+        });
 
 // Single Select Placeholder
 $("#select2-with-placeholder").select2({

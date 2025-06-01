@@ -12,16 +12,32 @@
                 <form action="{{ route('outcoming-item.store') }}" method="POST">
                     @csrf
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="ti ti-category"></i></span>
-                        <select class="form-select select-with-image" aria-label="Default select example"
-                            name="item_id">
-                            <option selected disable>Select Data</option>
+                        <span class="input-group-text" id="basic-addon1"><i class="ti ti-calculator"></i></span>
+                        <button class="text-start form-control" type="button" id="itemsDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="text-muted">- Choose Item -</span>
+                        </button>
+                        <ul class="dropdown-menu w-100" aria-labelledby="barangDropdown" style="max-height: 250px; overflow-y: auto;">
                             @foreach ($outMaindata as $data)
-                                <option value="{{ $data->id }}">
-                                    {{ $data->name }} | Stock : {{ $data->stock }}
-                                </option>
+                                <li style="display: flex; gap: 5px;" class="m-3">
+                                    <img src="{{ asset('images/data/' . $data->img) }}" alt="" srcset=""
+                                        style="width: 75px;">
+                                    <a class="dropdown-item" href="#" data-id="{{ $data->id }}"
+                                        data-name="{{ $data->name }}" data-stock="{{ $data->stock }}">
+                                        <div>
+                                            <strong>{{ $data->name }}</strong><br>
+                                            @if ($data->stock > 0)
+                                                <small class="badge bg-success mt-2"> Stock : {{ $data->stock }}</small>
+                                            @else
+                                                <small class="badge badge-sm bg-danger mt-2">Out Of Stock</small>
+                                            @endif
+                                        </div>
+                                    </a>
+                                </li>
+                                <hr>
                             @endforeach
-                        </select>
+                        </ul>
+                        <input type="hidden" name="item_id" id="item_id">
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="ti ti-calculator"></i></span>
@@ -48,3 +64,25 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        const dropdownButton = document.getElementById('itemsDropdown');
+        const hiddenInput = document.getElementById('item_id');
+
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', function () {
+                const name = this.getAttribute('data-name');
+                const id = this.getAttribute('data-id');
+
+                // Update the button text
+                dropdownButton.innerHTML = name;
+
+                // Set the hidden input value
+                hiddenInput.value = id;
+            });
+        });
+    });
+</script>

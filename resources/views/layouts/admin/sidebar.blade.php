@@ -57,7 +57,6 @@
                         <span class="hide-menu">Main Data</span>
                     </a>
                 </li>
-                @if (Auth::user()->is_admin === 1)
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{route('category.index')}}" aria-expanded="false">
                             <span>
@@ -66,7 +65,22 @@
                             <span class="hide-menu">Category</span>
                         </a>
                     </li>
-                @endif
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{route('room.index')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-building"></i>
+                        </span>
+                        <span class="hide-menu">Room</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{route('room_items.index')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-clipboard-list"></i>
+                        </span>
+                        <span class="hide-menu">Room Items</span>
+                    </a>
+                </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{route('incoming-item.index')}}" aria-expanded="false">
                         <span>

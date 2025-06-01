@@ -121,7 +121,7 @@ class mainDataController extends Controller
         $this->validate($request, [
             'name' => 'required|max:250',
             'category_id' => 'required',
-            'img' => 'required'
+            'img' => 'nullable'
         ]);
 
         $mainData = mainDatas::findOrFail($id);

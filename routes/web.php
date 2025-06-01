@@ -11,7 +11,7 @@ use App\Http\Controllers\incomingItemController;
 use App\Http\Controllers\outcomingItemController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\ReturnController;
-use App\Http\Middleware\isAdmin; 
+use App\Http\Middleware\isAdmin;
 
 
 /*
@@ -33,17 +33,17 @@ Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
 
-Route::prefix('/')->middleware('auth',isAdmin::class)->group(function(){    
-// Staff
-Route::resource('staff', StaffController::class);
-Route::get('/staff-export', [StaffController::class, 'export'])->name('staff.export');  
-Route::get('/staff-exportPDF', [StaffController::class, 'exportPDF'])->name('staff.exportPDF');  
+Route::prefix('/')->middleware('auth', isAdmin::class)->group(function () {
+    // Staff
+    Route::resource('staff', StaffController::class);
+    Route::get('/staff-export', [StaffController::class, 'export'])->name('staff.export');
+    Route::get('/staff-exportPDF', [StaffController::class, 'exportPDF'])->name('staff.exportPDF');
+});
 
 // Category    
 Route::resource('category', categoryController::class);
-Route::get('/category-export', [categoryController::class, 'export'])->name('category.export'); 
-Route::get('/category-exportPDF', [categoryController::class, 'exportPDF'])->name('category.exportPDF'); 
-});
+Route::get('/category-export', [categoryController::class, 'export'])->name('category.export');
+Route::get('/category-exportPDF', [categoryController::class, 'exportPDF'])->name('category.exportPDF');
 
 // Main Data
 Route::resource('mainData', mainDataController::class);
@@ -56,7 +56,7 @@ Route::get('/incoming-item-export', [incomingItemController::class, 'export'])->
 Route::get('/incoming-item-exportPDF', [incomingItemController::class, 'exportPDF'])->name('incoming.exportPDF');
 
 // Outcoming Data
-Route::resource('outcoming-item',outcomingItemController::class);
+Route::resource('outcoming-item', outcomingItemController::class);
 Route::get('/outcoming-item-export', [outcomingItemController::class, 'export'])->name('outcoming.export');
 Route::get('/outcoming-item-exportPDF', [outcomingItemController::class, 'exportPDF'])->name('outcoming.exportPDF');
 
@@ -67,6 +67,18 @@ Route::get('/loan.export', [LoanController::class, 'export'])->name('loan.export
 Route::get('/loan.exportPDF', [LoanController::class, 'exportPDF'])->name('loan.exportPDF');
 
 // Return
-Route::resource('return',ReturnController::class);
+Route::resource('return', ReturnController::class);
 Route::get('/return.export', [ReturnController::class, 'export'])->name('return.export');
 Route::get('/return.exportPDF', [ReturnController::class, 'exportPDF'])->name('return.exportPDF');
+
+// Room
+Route::resource('room', RoomController::class);
+Route::get('/room.export', [RoomController::class, 'export'])->name('room.export');
+Route::get('/room.exportPDF', [RoomController::class, 'exportPDF'])->name('room.exportPDF');
+
+// Room Items
+Route::resource('room_items', RoomItemsController::class);
+Route::put('room_items/{rooms_id}/{item_id}', [RoomItemsController::class, 'update'])->name('room_items.update');
+Route::delete('/room_items/{rooms_id}/{item_id}', [RoomItemsController::class, 'destroy'])->name('room_items.destroy');
+Route::get('/room_items.export', [RoomItemsController::class, 'export'])->name('room_items.export');
+Route::get('/room_items.exportPDF', [RoomItemsController::class, 'exportPDF'])->name('room_items.exportPDF');

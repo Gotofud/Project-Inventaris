@@ -99,7 +99,6 @@ class StaffController extends Controller
         $staff->name = $request->name;
         $staff->email = $request->email;
 
-        // Hanya update password kalau user isi
         if ($request->filled('password')) {
             $request->validate([
                 'password' => ['string', 'min:8', 'confirmed'],

@@ -13,7 +13,7 @@
   <!-- Core Css -->
   <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}" />
 
-  <title>Dutory - Admin Login</title>
+  <title>Dutory - Login</title>
 </head>
 
 
@@ -23,7 +23,7 @@
     <img src="{{ asset('assets/images/icon.png') }}" alt="loader" class="lds-ripple img-fluid" />
   </div>
 
-  <div id="main-wrapper" class="auth-customizer-none">
+  <div id="main-wrapper" class="auth-customizer-none" style="background-image: url('{{ asset('assets/images/backgrounds/active-bg.png') }}')">
     <div class="position-relative overflow-hidden radial-gradient min-vh-100 w-100">
       <div class="position-relative z-index-5">
         <div class="row">
@@ -51,7 +51,7 @@
                   <div class="mb-4">
                     <label for="exampleInputPassword1" class="form-label">Password</label>
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                      name="password" required autocomplete="current-password">
+                      name="password" required autocomplete="current-password"  required data-validation-required-message="This field is required" minlength="6">
                   </div>
                   <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Sign
                     In</button>

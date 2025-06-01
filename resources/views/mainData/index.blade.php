@@ -20,7 +20,8 @@
             <div class="body-wrapper">
                 <div class="container-fluid">
                     <!-- start Zero Configuration -->
-                    <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
+                    <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4"
+                    style="background-image: url('{{ asset('assets/images/backgrounds/profilebg.jpg') }}')">
                         <div class="card-body px-4 py-3">
                             <div class="row align-items-center">
                                 <div class="col-9">
@@ -106,7 +107,7 @@
                                         <!-- start row -->
                                         @foreach ($mainData as $data)
                                             <tr data-category="{{ $data->category->category_name }}"
-                                                data-date="{{ \Carbon\Carbon::parse($data->created_at)->format('Y-m-d') }}">
+                                                data-date="{{ \Carbon\Carbon::parse($data->created_at)->format('Y-m-d') }}" #>
                                                 <td>
                                                     <img src="{{asset('/images/data/' . $data->img)}}" class="rounded"
                                                         width="50">

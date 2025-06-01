@@ -14,5 +14,4 @@
 <script src="{{ asset('assets/js/dashboards/dashboard.js') }}"></script>
 <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('assets/js/datatable/datatable-basic.init.js') }}"></script>
- <script src="{{ asset('assets/js/forms/repeater-init.js') }}"></script>
-
+<script src="https://cdn.datatables.net/rowgroup/1.3.1/js/dataTables.rowGroup.min.js"></script>

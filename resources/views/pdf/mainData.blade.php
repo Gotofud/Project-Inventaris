@@ -69,9 +69,9 @@
 
 <body>
     <div class="header">
-    <img src="{{ public_path('assets/images/icon-main.png') }}" alt="Dutory Logo" class="logo">
-    <h1 class="report-title">Main Data Report</h1>
-</div>
+        <img src="{{ public_path('assets/images/icon-main.png') }}" alt="Dutory Logo" class="logo">
+        <h1 class="report-title">Main Data Report</h1>
+    </div>
 
 
 
@@ -105,11 +105,15 @@
                             <span class="empty-stock">Empty</span>
                         @endif
                     </td>
-                    <td>{{ $data->created_at->format('Y-m-d') }}<</td>
+                    <td>{{ $data->created_at->format('Y-m-d') }}
+                        << /td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+    <div class="footer">
+        © Copyright {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('Y') }} Dutory.
+    </div>
 </body>
 
 </html>
