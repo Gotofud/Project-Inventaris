@@ -76,7 +76,7 @@ class LoanController extends Controller
 
         $l_Maindata = mainDatas::findOrFail($request->item_id);
         if ($l_Maindata->stock < $request->amount) {
-            return redirect()->back()->with('error', "Stok untuk item {$l_Maindata->name} tidak cukup atau kosong.");
+            return redirect()->back()->with('error', "Stok for this item {$l_Maindata->name} was empty.");
         }
         $l_Maindata->stock -= $request->amount;
         $l_Maindata->save();
@@ -156,7 +156,7 @@ class LoanController extends Controller
 
             // Cek stok cukup untuk jumlah baru
             if ($mainData->stock < $request->amount) {
-                return redirect()->back()->with('error', "Stok untuk item {$mainData->name} tidak cukup atau kosong.");
+                return redirect()->back()->with('error', "Stock for this item {$mainData->name} was empty.");
             }
 
             // Kurangi stok dengan jumlah baru
@@ -173,7 +173,7 @@ class LoanController extends Controller
 
             // Cek stok cukup untuk item baru
             if ($newMainData->stock < $request->amount) {
-                return redirect()->back()->with('error', "Stok untuk item {$newMainData->name} tidak cukup atau kosong.");
+                return redirect()->back()->with('error', "Stock for thid item {$newMainData->name} was empty.");
             }
 
             // Kurangi stok item baru

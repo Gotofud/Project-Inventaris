@@ -121,14 +121,14 @@ class mainDataController extends Controller
         $this->validate($request, [
             'name' => 'required|max:250',
             'category_id' => 'required',
-            'img' => 'nullable'
         ]);
 
         $mainData = mainDatas::findOrFail($id);
         $category = Category::all();
-        if ($request->filled('prd_code')) {
+        if ($request->filled('prd_code', 'img')) {
             $request->validate([
                 'prd_code' => ['string', 'confirmed'],
+                'img' => ['string', 'confirmed'],
             ]);
 
             $lastRecord = mainDatas::latest('id')->first();
@@ -136,20 +136,20 @@ class mainDataController extends Controller
             $prd_code = 'ITEM-' . str_pad($lastId + 1, 4, '0', STR_PAD_LEFT);
             $mainData->prd_code = $prd_code;
 
+            if ($request->hasFile('img')) {
+                $mainData->deleteImage();
+                $img = $request->file('img');
+                $name = rand(1000, 9999) . $img->getClientOriginalName();
+                $img->move('images/data', $name);
+                $mainData->img = $name;
+            } else {
+                $mainData->img = null;
+            }
+
         }
 
         $mainData->name = $request->name;
         $mainData->category_id = $request->category_id;
-
-        if ($request->hasFile('img')) {
-            $mainData->deleteImage();
-            $img = $request->file('img');
-            $name = rand(1000, 9999) . $img->getClientOriginalName();
-            $img->move('images/data', $name);
-            $mainData->img = $name;
-        } else {
-            $mainData->img = null;
-        }
 
         $mainData->save();
 

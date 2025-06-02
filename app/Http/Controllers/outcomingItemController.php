@@ -142,7 +142,7 @@ class outcomingItemController extends Controller
 
             // Cek stok cukup untuk jumlah baru
             if ($mainData->stock < $request->amount) {
-                return redirect()->back()->with('error', "Stok untuk item {$mainData->name} tidak cukup atau kosong.");
+                return redirect()->back()->with('error', "Stock for this item {$mainData->name} was empty.");
             }
 
             // Kurangi stok dengan jumlah baru

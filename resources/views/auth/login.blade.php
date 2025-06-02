@@ -23,7 +23,8 @@
     <img src="{{ asset('assets/images/icon.png') }}" alt="loader" class="lds-ripple img-fluid" />
   </div>
 
-  <div id="main-wrapper" class="auth-customizer-none" style="background-image: url('{{ asset('assets/images/backgrounds/active-bg.png') }}')">
+  <div id="main-wrapper" class="auth-customizer-none"
+    style="background-image: url('{{ asset('assets/images/backgrounds/active-bg.png') }}')">
     <div class="position-relative overflow-hidden radial-gradient min-vh-100 w-100">
       <div class="position-relative z-index-5">
         <div class="row">
@@ -47,11 +48,22 @@
                     <label for="exampleInputEmail1" class="form-label">Email</label>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
                       name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                    @error('email')
+            <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+            </span>
+          @enderror
                   </div>
                   <div class="mb-4">
                     <label for="exampleInputPassword1" class="form-label">Password</label>
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                      name="password" required autocomplete="current-password"  required data-validation-required-message="This field is required" minlength="6">
+                      name="password" required autocomplete="current-password" required
+                      data-validation-required-message="This field is required" minlength="6">
+                    @error('password')
+            <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+            </span>
+          @enderror
                   </div>
                   <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Sign
                     In</button>

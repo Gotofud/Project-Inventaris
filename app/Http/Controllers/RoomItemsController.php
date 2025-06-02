@@ -84,7 +84,7 @@ class RoomItemsController extends Controller
             // Cek stok item
             $item = mainDatas::findOrFail($item_id);
             if ($item->stock < $amount) {
-                return redirect()->back()->with('error', "Stok untuk item {$item->name} tidak cukup atau kosong.");
+                return redirect()->back()->with('error', "Stock for this item {$item->name} was empty.");
             }
 
             // Check if the record already exists
@@ -159,7 +159,7 @@ class RoomItemsController extends Controller
             // Cek stok item
             $item = mainDatas::findOrFail($item_id);
             if ($item->stock < $amount) {
-                return redirect()->back()->with('error', "Stok untuk item {$item->name} tidak cukup atau kosong.");
+                return redirect()->back()->with('error', "Stock for this item {$item->name} was empty.");
             }
 
             $existingItem = Room_Items::where('rooms_id', $rooms_id)
